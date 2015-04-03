@@ -64,6 +64,22 @@ When set to true, the python-pip package is installed. If the parameter is false
 then the pip command should be provided by some other means or yas3fs will not
 be installed.
 
+#####`mounts`
+
+A hash of mounts can be passed (possibly from hiera) as part of the class
+declaration.
+
+```puppet
+class { 'yas3fs':
+  mounts => {
+    'example-mount' => {
+      's3_url'     => 's3://example-bucket/',
+      'local_path' => '/media/s3',
+    }
+  }
+}
+```
+
 ####Defined Type: `yas3fs::mount`
 
 Mounts a bucket/path using fuse by creating an upstart job.

@@ -23,5 +23,31 @@ describe 'yas3fs', :type => :class do
       it { is_expected.not_to contain_package('python-pip')}
 
     end
+
+    context 'with mounts in the initial resource creation' do
+      let :params do
+        {
+          :mounts => {
+            'test-mount' => {
+              's3_url'     => 's3://example-bucket/',
+              'local_path' => '/media/s3',
+            }
+          }
+        }
+      end
+
+      it { is_expected.to contain_file('yas3fs-test-mount.conf').with(
+        'ensure' => 'present',
+        'path'   => '/etc/init/s3fs-test-mount.conf',
+      ) }
+
+      it { is_expected.to contain_service('s3fs-test-mount').with(
+        'ensure' => 'running',
+        'enable' => true,
+      ) }
+
+
+    end
+
   end
 end
