@@ -1,0 +1,30 @@
+start on (filesystem and net-device-up IFACE=eth0)
+stop on runlevel [!2345]
+
+env S3_URL="<%= @s3_url %>"
+env LOCAL_PATH="<%= @local_path %>"
+
+<% if @aws_access_key_id -%>
+env AWS_ACCESS_KEY_ID="<%= @aws_access_key_id %>"
+env AWS_SECRET_ACCESS_KEY="<%= @aws_secret_access_key %>"
+<% end -%>
+
+<% cmd_args = '' -%>
+<% @options.each do |v| -%>
+<% cmd_args = "#{cmd_args} --#{v}" -%>
+<% end -%>
+respawn
+kill timeout 15
+oom never
+
+script
+  MOUNTED=$(mount|grep " $LOCAL_PATH "|wc -l)
+  if [ $MOUNTED = "1" ]; then
+    umount "$LOCAL_PATH"
+  fi
+  <%= "exec /usr/local/bin/yas3fs -f #{cmd_args} \"$S3_URL\" \"$LOCAL_PATH\"" %>
+end script
+
+pre-stop script
+  umount "$LOCAL_PATH"
+end script
