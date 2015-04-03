@@ -1,5 +1,7 @@
 #puppet-yas3fs
 
+[![Build Status](https://travis-ci.org/pcfens/puppet-yas3fs.png?branch=master)](https://travis-ci.org/pcfens/puppet-yas3fs)
+
 ####Table of Contents
 
 1. [Overview](#overview)
