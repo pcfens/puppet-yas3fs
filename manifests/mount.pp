@@ -46,6 +46,7 @@ define yas3fs::mount (
     content => template('yas3fs/upstart.erb'),
     owner   => 'root',
     group   => 'root',
+    notify  => Service["s3fs-${name}"],
   }
 
   if $ensure == 'present' or $ensure == 'mounted' or $ensure == 'unmounted' {

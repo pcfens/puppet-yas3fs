@@ -19,6 +19,7 @@ describe 'yas3fs::mount', :type => :define do
     it { is_expected.to contain_file('yas3fs-test-mount.conf').with(
       'ensure' => 'present',
       'path'   => '/etc/init/s3fs-test-mount.conf',
+      'notify' => 'Service[s3fs-test-mount]',
     ) }
 
     it { is_expected.to contain_service('s3fs-test-mount').with(
@@ -41,6 +42,7 @@ describe 'yas3fs::mount', :type => :define do
     it { is_expected.to contain_file('yas3fs-test-mount.conf').with(
       'ensure' => 'present',
       'path'   => '/etc/init/s3fs-test-mount.conf',
+      'notify' => 'Service[s3fs-test-mount]',
     ) }
 
     it { is_expected.to contain_service('s3fs-test-mount').with(
