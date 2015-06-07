@@ -4,17 +4,27 @@ class yas3fs::package {
 
   if $::yas3fs::install_pip_package {
     package { 'python-pip':
-      ensure => present,
+      ensure        => present,
+      allow_virtual => true
     }
   }
 
   package { 'fuse':
-    ensure => present,
+    ensure        => present,
+    allow_virtual => true
+  }
+
+  if ($::osfamily == 'RedHat') {
+    package { 'fuse-libs':
+      ensure        => present,
+      allow_virtual => true
+    }
   }
 
   package { 'yas3fs':
-    ensure   => present,
-    provider => 'pip',
+    ensure        => present,
+    provider      => 'pip',
+    allow_virtual => true
   }
 
 }
