@@ -13,7 +13,7 @@ Environment=AWS_ACCESS_KEY_ID="<%= @aws_access_key_id %>" AWS_SECRET_ACCESS_KEY=
 <% @options.each do |v| -%>
 <% cmd_args = "#{cmd_args} --#{v}" -%>
 <% end -%>
-ExecStart=/usr/local/bin/yas3fs -f <%= cmd_args %> "<%= @s3_url %>" "<%= @local_path %>"
+ExecStart=yas3fs -f <%= cmd_args %> "<%= @s3_url %>" "<%= @local_path %>"
 ExecStop=umount <%= @local_path %>
 RestartSec=5
 Restart=on-failure
