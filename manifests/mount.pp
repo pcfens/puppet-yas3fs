@@ -48,7 +48,7 @@ define yas3fs::mount (
         path        => ["/bin", "/sbin", "/usr/bin", "/usr/sbin"],
         refreshonly => true,
         subscribe   => File["yas3fs-${name}"],
-        before      => Service['"s3fs-${name}"'],
+        before      => Service["s3fs-${name}"],
       }
       file { "yas3fs-${name}":
         ensure  => $init_file_ensure,
