@@ -18,35 +18,73 @@ define yas3fs::mount (
 
   case $ensure {
     'mounted': {
-      $upstart_file_ensure = 'present'
+      $init_file_ensure = 'present'
       $service_ensure = 'running'
       $service_enable = true
     }
     'unmounted': {
-      $upstart_file_ensure = 'present'
+      $init_file_ensure = 'present'
       $service_ensure = 'stopped'
       $service_enable = false
     }
     'present': {
-      $upstart_file_ensure = 'present'
+      $init_file_ensure = 'present'
       $service_ensure = 'running'
       $service_enable = true
     }
     'absent': {
-      $upstart_file_ensure = 'absent'
+      $init_file_ensure = 'absent'
     }
     default: {
       fail('Only mounted, unmounted, and present are valid ensure values for yas3fs::mount')
     }
   }
 
-  file { "yas3fs-${name}.conf":
-    ensure  => $upstart_file_ensure,
-    path    => "/etc/init/s3fs-${name}.conf",
-    content => template('yas3fs/upstart.erb'),
-    owner   => 'root',
-    group   => 'root',
-    notify  => Service["s3fs-${name}"],
+  case $yas3fs::init_system {
+    'systemd': {
+      exec { 'yas3fs_reload_systemd':
+        # SystemD needs a reload after any unit file change
+        command     => 'systemctl daemon-reload',
+        path        => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
+        refreshonly => true,
+        subscribe   => File["yas3fs-${name}"],
+        before      => Service["s3fs-${name}"],
+      }
+      file { "yas3fs-${name}":
+        ensure  => $init_file_ensure,
+        path    => "/etc/systemd/system/s3fs-${name}.service",
+        content => template('yas3fs/systemd.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0600',
+        notify  => Service["s3fs-${name}"],
+      }
+    }
+    'upstart': {
+      file { "yas3fs-${name}":
+        ensure  => $init_file_ensure,
+        path    => "/etc/init/s3fs-${name}.conf",
+        content => template('yas3fs/upstart.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0600',
+        notify  => Service["s3fs-${name}"],
+      }
+    }
+    'sysvinit': {
+      file { "yas3fs-${name}":
+        ensure  => $init_file_ensure,
+        path    => "/etc/init.d/s3fs-${name}",
+        content => template('yas3fs/sysvinit.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0700',
+        notify  => Service["s3fs-${name}"],
+      }
+    }
+    default : {
+      fail("Unknown init system ${yas3fs::init_system}, unable to install startup script for Yas3fs")
+    }
   }
 
   if $ensure == 'present' or $ensure == 'mounted' or $ensure == 'unmounted' {
@@ -54,7 +92,7 @@ define yas3fs::mount (
       ensure  => $service_ensure,
       enable  => $service_enable,
       require => [
-        File["yas3fs-${name}.conf"],
+        File["yas3fs-${name}"],
         Class['yas3fs'],
       ]
     }

@@ -16,7 +16,7 @@ describe 'yas3fs::mount', :type => :define do
       :local_path => '/media/test-mount',
     } end
 
-    it { is_expected.to contain_file('yas3fs-test-mount.conf').with(
+    it { is_expected.to contain_file('yas3fs-test-mount').with(
       'ensure' => 'present',
       'path'   => '/etc/init/s3fs-test-mount.conf',
       'notify' => 'Service[s3fs-test-mount]',
@@ -39,7 +39,7 @@ describe 'yas3fs::mount', :type => :define do
       ]
     } end
 
-    it { is_expected.to contain_file('yas3fs-test-mount.conf').with(
+    it { is_expected.to contain_file('yas3fs-test-mount').with(
       'ensure' => 'present',
       'path'   => '/etc/init/s3fs-test-mount.conf',
       'notify' => 'Service[s3fs-test-mount]',

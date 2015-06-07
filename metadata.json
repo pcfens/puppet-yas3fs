@@ -29,6 +29,10 @@
     {
       "name": "puppetlabs/stdlib",
       "version_requirement": ">=4.6.0 <5.0.0"
+    },
+    {
+      "name": "jethrocarr/initfact",
+      "version_requirement": ">=1.0.0 <2.0.0"
     }
   ]
 }
