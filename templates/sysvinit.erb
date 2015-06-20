@@ -47,10 +47,11 @@ case "$1" in
         echo "Already started"
     else
         echo "Starting $name"
-	<%= "( /usr/local/bin/yas3fs -f #{cmd_args} \"$S3_URL\" \"$LOCAL_PATH\" & echo $! > \"$pid_file\" ) 2>&1 | logger -t yas3fs-#{@name} &" %>
+	<%= "( yas3fs -f #{cmd_args} \"$S3_URL\" \"$LOCAL_PATH\" & echo $! > \"$pid_file\" ) 2>&1 | logger -t yas3fs-#{@name} &" %>
 	sleep 1 # avoid trying to get the PID before it exists yet
         echo "Running as PID `get_pid`"
 
+	sleep 5 # it can take a few seconds to mount the filesystem
 	if ! is_running; then
             echo "Unable to start, see syslog for details"
             exit 1
