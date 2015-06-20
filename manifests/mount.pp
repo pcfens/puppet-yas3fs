@@ -45,7 +45,7 @@ define yas3fs::mount (
       exec { 'yas3fs_reload_systemd':
         # SystemD needs a reload after any unit file change
         command     => 'systemctl daemon-reload',
-        path        => ["/bin", "/sbin", "/usr/bin", "/usr/sbin"],
+        path        => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
         refreshonly => true,
         subscribe   => File["yas3fs-${name}"],
         before      => Service["s3fs-${name}"],
@@ -56,7 +56,7 @@ define yas3fs::mount (
         content => template('yas3fs/systemd.erb'),
         owner   => 'root',
         group   => 'root',
-	mode    => '0600',
+        mode    => '0600',
         notify  => Service["s3fs-${name}"],
       }
     }
@@ -67,7 +67,7 @@ define yas3fs::mount (
         content => template('yas3fs/upstart.erb'),
         owner   => 'root',
         group   => 'root',
-	mode    => '0600',
+        mode    => '0600',
         notify  => Service["s3fs-${name}"],
       }
     }
@@ -78,7 +78,7 @@ define yas3fs::mount (
         content => template('yas3fs/sysvinit.erb'),
         owner   => 'root',
         group   => 'root',
-	mode    => '0700',
+        mode    => '0700',
         notify  => Service["s3fs-${name}"],
       }
     }
