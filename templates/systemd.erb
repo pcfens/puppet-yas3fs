@@ -7,14 +7,14 @@ Description=S3-backed FUSE filesystem
 [Service]
 Type=simple
 <% if @aws_access_key_id -%>
-Environment=AWS_ACCESS_KEY_ID=<%= @aws_access_key_id %> AWS_SECRET_ACCESS_KEY="<%= @aws_secret_access_key %>
+Environment=AWS_ACCESS_KEY_ID=<%= @aws_access_key_id %> AWS_SECRET_ACCESS_KEY=<%= @aws_secret_access_key %>
 <% end -%>
 <% cmd_args = '' -%>
 <% @options.each do |v| -%>
 <% cmd_args = "#{cmd_args} --#{v}" -%>
 <% end -%>
 ExecStart=/usr/bin/yas3fs -f <%= cmd_args %> <%= @s3_url %> <%= @local_path %>
-ExecStop=umount <%= @local_path %>
+ExecStop=/bin/umount <%= @local_path %>
 RestartSec=5
 Restart=on-failure
 OOMScoreAdjust=-1000
