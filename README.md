@@ -31,7 +31,7 @@ invalidating caches on other nodes using SQS and SNS.
 ###What yas3fs affects
 
 * fuse package and configuration
-* upstart jobs that are used to manage yas3fs mounts
+* init jobs (sysvinit, upstart or systemd) that are used to manage yas3fs mounts
 * python-pip package (optional)
 
 ###Beginning with yas3fs
@@ -84,7 +84,7 @@ class { 'yas3fs':
 
 ####Defined Type: `yas3fs::mount`
 
-Mounts a bucket/path using fuse by creating an upstart job.
+Mounts a bucket/path using fuse by creating an init job.
 
 ```puppet
 yas3fs::mount { 'example-mount':
@@ -105,7 +105,7 @@ yas3fs::mount { 'example-mount':
 Control what to do with this mount. Valid values are `mounted` (default), `unmounted`, `absent`,
 and `present`.
 
-WARNING: setting ensure to `absent` removes the upstart configuration, but cannot
+WARNING: setting ensure to `absent` removes the service configuration, but cannot
 verify that the service is stopped.
 
 #####`s3_url`
