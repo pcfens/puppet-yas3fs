@@ -36,7 +36,7 @@ describe 'yas3fs', :type => :class do
         }
       end
 
-      it { is_expected.to contain_file('yas3fs-test-mount.conf').with(
+      it { is_expected.to contain_file('yas3fs-test-mount').with(
         'ensure' => 'present',
         'path'   => '/etc/init/s3fs-test-mount.conf',
       ) }
