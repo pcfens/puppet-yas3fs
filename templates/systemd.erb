@@ -7,7 +7,7 @@ Description=S3-backed FUSE filesystem
 [Service]
 Type=simple
 <% if @aws_access_key_id -%>
-Environment=AWS_ACCESS_KEY_ID=<%= @aws_access_key_id %> AWS_SECRET_ACCESS_KEY="%= @aws_secret_access_key %>
+Environment=AWS_ACCESS_KEY_ID=<%= @aws_access_key_id %> AWS_SECRET_ACCESS_KEY="<%= @aws_secret_access_key %>
 <% end -%>
 <% cmd_args = '' -%>
 <% @options.each do |v| -%>
