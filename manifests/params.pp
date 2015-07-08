@@ -8,9 +8,9 @@ class yas3fs::params {
   # exiting puppet-yas3fs users.
 
   if ($::initsystem) {
-    $install_init = $::initsystem
+    $init_system = $::initsystem
   } else {
-    $install_init = 'upstart'
+    $init_system = 'upstart'
   }
 
 }

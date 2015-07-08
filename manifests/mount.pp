@@ -40,7 +40,7 @@ define yas3fs::mount (
     }
   }
 
-  case $yas3fs::install_init {
+  case $yas3fs::init_system {
     'systemd': {
       exec { 'yas3fs_reload_systemd':
         # SystemD needs a reload after any unit file change
@@ -83,7 +83,7 @@ define yas3fs::mount (
       }
     }
     default : {
-      fail("Unknown init system ${yas3fs::install_init}, unable to install startup script for Yas3fs")
+      fail("Unknown init system ${yas3fs::init_system}, unable to install startup script for Yas3fs")
     }
   }
 

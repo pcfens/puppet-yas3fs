@@ -66,6 +66,12 @@ When set to true, the python-pip package is installed. If the parameter is false
 then the pip command should be provided by some other means or yas3fs will not
 be installed.
 
+#####`init_system`
+
+Defines the type of init script/configuration to install out of `upstart`,
+`systemd` or `sysvinit`. If the parameter is unset, autodiscovery takes place.
+
+
 #####`mounts`
 
 A hash of mounts can be passed (possibly from hiera) as part of the class
