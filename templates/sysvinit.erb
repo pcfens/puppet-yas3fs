@@ -1,0 +1,112 @@
+#!/bin/sh
+# Managed by the puppet-yas3fs module.
+
+
+### BEGIN INIT INFO
+# Provides:          s3fs-<%= @name %>
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# chkconfig:         - 98 02
+# Short-Description: Yas3fs Filesystem Mount
+# Description:       Sets up a FUSE mount for an S3-backed filesystem using Yas3fs
+### END INIT INFO
+
+PATH=$PATH:/usr/local/bin
+
+export S3_URL="<%= @s3_url %>"
+export LOCAL_PATH="<%= @local_path %>"
+
+<% if @aws_access_key_id -%>
+export AWS_ACCESS_KEY_ID="<%= @aws_access_key_id %>"
+export AWS_SECRET_ACCESS_KEY="<%= @aws_secret_access_key %>"
+<% end -%>
+
+<% cmd_args = '' -%>
+<% @options.each do |v| -%>
+<% cmd_args = "#{cmd_args} --#{v}" -%>
+<% end -%>
+
+name=`basename $0`
+pid_file="/var/run/$name.pid"
+
+get_pid() {
+    touch "$pid_file"
+    cat "$pid_file"
+}
+
+is_running() {
+    # Not much point checking the PID, the mount is what matters.
+    mount | grep " $LOCAL_PATH " 2>&1 > /dev/null
+}
+
+case "$1" in
+    start)
+    if is_running; then
+        echo "Already started"
+    else
+        echo "Starting $name"
+	<%= "( yas3fs -f #{cmd_args} \"$S3_URL\" \"$LOCAL_PATH\" & echo $! > \"$pid_file\" ) 2>&1 | logger -t yas3fs-#{@name} &" %>
+	sleep 1 # avoid trying to get the PID before it exists yet
+        echo "Running as PID `get_pid`"
+
+	sleep 5 # it can take a few seconds to mount the filesystem
+	if ! is_running; then
+            echo "Unable to start, see syslog for details"
+            exit 1
+        fi
+    fi
+    ;;
+    stop)
+    if is_running; then
+        echo -n "Stopping $name.."
+	umount "$LOCAL_PATH"
+
+        for i in {1..10}
+        do
+            if ! is_running; then
+                break
+            fi
+
+            echo -n "."
+            sleep 1
+        done
+        echo
+
+        if is_running; then
+            echo "Not stopped; filesystem may be in use which is preventing proper shutdown"
+            exit 1
+        else
+            echo "Stopped"
+            if [ -f "$pid_file" ]; then
+                rm "$pid_file"
+            fi
+        fi
+    else
+        echo "Not running"
+    fi
+    ;;
+    restart)
+    $0 stop
+    if is_running; then
+        echo "Unable to stop, will not attempt to start"
+        exit 1
+    fi
+    $0 start
+    ;;
+    status)
+    if is_running; then
+        echo "Running"
+    else
+        echo "Stopped"
+        exit 1
+    fi
+    ;;
+    *)
+    echo "Usage: $0 {start|stop|restart|status}"
+    exit 1
+    ;;
+esac
+
+exit 0
