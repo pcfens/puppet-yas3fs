@@ -93,7 +93,6 @@ define yas3fs::mount (
       enable  => $service_enable,
       require => [
         File["yas3fs-${name}"],
-        Class['yas3fs'],
       ]
     }
   }
