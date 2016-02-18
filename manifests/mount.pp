@@ -10,7 +10,7 @@ define yas3fs::mount (
   validate_array($options)
   validate_string($s3_url, $local_path, $aws_access_key_id, $aws_secret_access_key)
 
-  contain ::yas3fs
+  include ::yas3fs
 
   file { $local_path:
     ensure => directory,
