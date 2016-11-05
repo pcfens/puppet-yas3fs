@@ -9,7 +9,7 @@ describe 'yas3fs::mount', :type => :define do
   let :title do
     'test-mount'
   end
-  
+
   describe 'on all systems' do
     context 'with upstart' do
       let :params do {
@@ -19,6 +19,7 @@ describe 'yas3fs::mount', :type => :define do
 
       let :facts do {
         :initsystem => 'upstart',
+        :osfamily => 'Debian'
       } end
 
       it { is_expected.to contain_file('yas3fs-test-mount').with(
@@ -35,7 +36,8 @@ describe 'yas3fs::mount', :type => :define do
 
     context 'with systemd' do
       let :facts do {
-        :initsystem => 'systemd'
+        :initsystem => 'systemd',
+        :osfamily => 'Debian'
       } end
 
       let :params do {
@@ -43,7 +45,7 @@ describe 'yas3fs::mount', :type => :define do
         :local_path => '/media/test-mount',
       } end
 
-      it { is_expected.to contain_exec('yas3fs_reload_systemd').with(
+      it { is_expected.to contain_exec('yas3fs_reload_systemd-test-mount').with(
         'command'   => 'systemctl daemon-reload',
         'subscribe' => 'File[yas3fs-test-mount]',
         'before'    => 'Service[s3fs-test-mount]',
@@ -63,7 +65,8 @@ describe 'yas3fs::mount', :type => :define do
 
     context 'with sysvinit' do
       let :facts do {
-        :initsystem => 'sysvinit'
+        :initsystem => 'sysvinit',
+        :osfamily => 'Debian'
       } end
 
       let :params do {

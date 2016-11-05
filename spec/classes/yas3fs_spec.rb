@@ -1,8 +1,13 @@
 require 'spec_helper'
 describe 'yas3fs', :type => :class do
 
+  let :facts do {
+    :osfamily => 'Debian',
+    :initsystem => 'upstart'
+  } end
+
+
   context 'defaults' do
-    it { is_expected.to contain_yas3fs__params }
     it { is_expected.to contain_package('fuse') }
     it { is_expected.to contain_package('python-pip') }
 

@@ -42,7 +42,7 @@ define yas3fs::mount (
 
   case $yas3fs::init_system {
     'systemd': {
-      exec { 'yas3fs_reload_systemd':
+      exec { "yas3fs_reload_systemd-${name}":
         # SystemD needs a reload after any unit file change
         command     => 'systemctl daemon-reload',
         path        => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
