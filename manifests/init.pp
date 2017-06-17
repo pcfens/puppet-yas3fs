@@ -5,10 +5,10 @@ class yas3fs (
   $mounts              = {},
 ) inherits yas3fs::params {
 
-  anchor { 'yas3fs::begin': } ->
-  class { '::yas3fs::package': } ->
-  class { '::yas3fs::config': } ->
-  anchor { 'yas3fs::end':}
+  anchor { 'yas3fs::begin': }
+  -> class { '::yas3fs::package': }
+  -> class { '::yas3fs::config': }
+  -> anchor { 'yas3fs::end':}
 
   if !empty($mounts) {
     create_resources('yas3fs::mount', $mounts)
