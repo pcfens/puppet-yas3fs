@@ -1,8 +1,8 @@
 # yas3fs package install
 class yas3fs::package (
-  $provider     = $yas3fs::provider,
-  $vcs_remote   = $yas3fs::vcs_remote,
-  $vcs_revision = $yas3fs::vcs_revision,
+  $provider     = $::yas3fs::provider,
+  $vcs_remote   = $::yas3fs::vcs_remote,
+  $vcs_revision = $::yas3fs::vcs_revision,
 ){
   assert_private()
 
