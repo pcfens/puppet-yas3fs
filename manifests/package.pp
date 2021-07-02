@@ -44,7 +44,7 @@ class yas3fs::package (
       }
 
       exec { 'install yas3fs':
-        command => 'python setup.py install',
+        command => 'python /var/tmp/yas3fs/setup.py install',
         creates => '/usr/bin/yas3fs',
         require => Vcsrepo['/var/tmp/yas3fs'],
       }
