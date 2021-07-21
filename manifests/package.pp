@@ -34,6 +34,12 @@ class yas3fs::package (
       }
     }
     'vcs': {
+      #Remove pip installed package before installing from source.
+      package { 'yas3fs':
+        ensure        => absent,
+        provider      => 'pip',
+        allow_virtual => true
+      }
       # yas3fs setup.py barfs on setuptools and boto3 installs.
       # I think it is RHEL's fault
       package { 'setuptools':
@@ -59,7 +65,7 @@ class yas3fs::package (
         command => 'python /var/tmp/yas3fs/setup.py install',
         creates => '/usr/bin/yas3fs',
         cwd     => '/var/tmp/yas3fs',
-        require => [Package['setuptools', 'boto3'],Vcsrepo['/var/tmp/yas3fs']],
+        require => [Package['yas3fs', 'setuptools', 'boto3'],Vcsrepo['/var/tmp/yas3fs']],
       }
     }
     default: {
