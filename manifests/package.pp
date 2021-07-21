@@ -34,12 +34,14 @@ class yas3fs::package (
       }
     }
     'vcs': {
-      #Remove pip installed package before installing from source.
-      package { 'yas3fs':
-        ensure        => absent,
-        provider      => 'pip',
-        allow_virtual => true
-      }
+      # Unfortunately puppet package resource does not allow us to
+      # Uninstall a specific version of a pip package.
+      # Attempting to set ensure absent for pip package yas3fs
+      # Will also uninstall the version installed from source.
+      # Attempting to set ensure latest also does not work well.
+      # Please manually uninstall yas3fs pip package if going
+      # pip package to install from source.
+
       # yas3fs setup.py barfs on setuptools and boto3 installs.
       # I think it is RHEL's fault
       package { 'setuptools':
