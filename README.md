@@ -40,6 +40,12 @@ To install fuse, python-pip, and yas3fs
 ```puppet
 class { 'yas3fs': }
 ```
+To install fuse, python-pip, and yas3fs from github source
+```puppet
+class { 'yas3fs':
+  provider: 'vcs',
+}
+```
 
 If you'd rather provide pip though some other means, set
 `install_pip_package` to `false`:
@@ -71,6 +77,26 @@ be installed.
 Defines the type of init script/configuration to install out of `upstart`,
 `systemd` or `sysvinit`. If the parameter is unset, autodiscovery takes place.
 
+#####`provider`
+
+Sets if yas3fs should installed from default pip package provider
+or if github source is pulled and pip package is built.
+Set to 'vcs' to build from github source.
+To switch to vcs from yas3fs previously installied pip package
+manually intervention is required. Please manually
+uninstall previosly installied pip package before switching to
+vcs type install.
+Default: 'pip'
+
+#####`vcs_remote`
+
+Optionally set yas3fs source code to be other than original
+Default: 'https://github.com/danilop/yas3fs.git'
+
+#####`vcs_revision`
+
+Optionally set to use code from a specific commit or branch
+Default: 'master'
 
 #####`mounts`
 
