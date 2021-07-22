@@ -67,7 +67,7 @@ class yas3fs::package (
         command => 'python /var/tmp/yas3fs/setup.py install',
         creates => '/usr/bin/yas3fs',
         cwd     => '/var/tmp/yas3fs',
-        require => [Package['yas3fs', 'setuptools', 'boto3'],Vcsrepo['/var/tmp/yas3fs']],
+        require => [Package['setuptools', 'boto3'],Vcsrepo['/var/tmp/yas3fs']],
       }
     }
     default: {
