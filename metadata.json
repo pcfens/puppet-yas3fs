@@ -1,13 +1,22 @@
 {
   "name": "pcfens-yas3fs",
-  "version": "0.3.3",
+  "version": "0.4.0",
   "author": "pcfens",
-  "license": "Apache-2.0",
   "summary": "A module to install and manage yas3fs mounts",
+  "license": "Apache-2.0",
   "source": "https://github.com/pcfens/puppet-yas3fs",
   "project_page": "https://github.com/pcfens/puppet-yas3fs",
   "issues_url": "https://github.com/pcfens/puppet-yas3fs/issues",
-  "tags": ["s3", "aws", "s3fs"],
+  "dependencies": [
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">=4.6.0 <5.0.0"
+    },
+    {
+      "name": "jethrocarr/initfact",
+      "version_requirement": ">=1.0.0 <2.0.0"
+    }
+  ],
   "operatingsystem_support": [
     {
       "operatingsystem": "RedHat",
@@ -25,14 +34,18 @@
       ]
     }
   ],
-  "dependencies": [
+  "requirements": [
     {
-      "name": "puppetlabs/stdlib",
-      "version_requirement": ">=4.6.0 <5.0.0"
-    },
-    {
-      "name": "jethrocarr/initfact",
-      "version_requirement": ">=1.0.0 <2.0.0"
+      "name": "puppet",
+      "version_requirement": ">= 6.21.0 < 8.0.0"
     }
-  ]
+  ],
+  "tags": [
+    "s3",
+    "aws",
+    "s3fs"
+  ],
+  "pdk-version": "2.1.1",
+  "template-url": "pdk-default#2.1.1",
+  "template-ref": "tags/2.1.1-0-g03daa92"
 }
