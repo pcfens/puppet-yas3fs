@@ -1,5 +1,6 @@
 fixtures:
-  repositories:
-    "stdlib": "git://github.com/puppetlabs/puppetlabs-stdlib.git"
+  forge_modules:
+    stdlib: 'puppetlabs/stdlib'
+    augeas_core: 'puppetlabs/augeas_core'
   symlinks:
     "yas3fs": "#{source_dir}"
