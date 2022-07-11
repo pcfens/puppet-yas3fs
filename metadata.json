@@ -10,27 +10,25 @@
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",
-      "version_requirement": ">=4.6.0 <5.0.0"
-    },
-    {
-      "name": "jethrocarr/initfact",
-      "version_requirement": ">=1.0.0 <2.0.0"
+      "version_requirement": ">=4.6.0 <7.0.0"
     }
   ],
   "operatingsystem_support": [
     {
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
-        "5.0",
-        "6.0",
-        "7.0"
+        "6",
+        "7",
+	"8"
       ]
     },
     {
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [
-        "12.04",
-        "14.04"
+        "16.04",
+        "18.04",
+        "20.04",
+	"22.04"
       ]
     }
   ],

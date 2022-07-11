@@ -14,14 +14,14 @@ describe 'yas3fs::mount', type: :define do
       let :params do
         {
           s3_url: 's3://test-bucket',
-        local_path: '/media/test-mount',
+          local_path: '/media/test-mount',
         }
       end
 
       let :facts do
         {
-          initsystem: 'upstart',
-        osfamily: 'Debian'
+          service_provider: 'upstart',
+          osfamily: 'Debian'
         }
       end
 
@@ -44,15 +44,15 @@ describe 'yas3fs::mount', type: :define do
     context 'with systemd' do
       let :facts do
         {
-          initsystem: 'systemd',
-        osfamily: 'Debian'
+          service_provider: 'systemd',
+          osfamily: 'Debian'
         }
       end
 
       let :params do
         {
           s3_url: 's3://test-bucket',
-        local_path: '/media/test-mount',
+          local_path: '/media/test-mount',
         }
       end
 
@@ -83,15 +83,15 @@ describe 'yas3fs::mount', type: :define do
     context 'with sysvinit' do
       let :facts do
         {
-          initsystem: 'sysvinit',
-        osfamily: 'Debian'
+          service_provider: 'sysvinit',
+          osfamily: 'Debian'
         }
       end
 
       let :params do
         {
           s3_url: 's3://test-bucket',
-        local_path: '/media/test-mount',
+          local_path: '/media/test-mount',
         }
       end
 
