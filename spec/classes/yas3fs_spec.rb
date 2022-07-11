@@ -1,6 +1,5 @@
 require 'spec_helper'
 describe 'yas3fs', type: :class do
-
   context 'on a supported operating system' do
     on_supported_os.each do |os, facts|
       context os do
@@ -15,8 +14,8 @@ describe 'yas3fs', type: :class do
           # attempting to run facterdb locally complains of switching
           # from get_os_facts to get_facts.
           case facts[:osfamily]
-            when 'Redhat'
-              it { is_expected.to contain_package('fuse-libs') }
+          when 'Redhat'
+            it { is_expected.to contain_package('fuse-libs') }
           end
           it { is_expected.to contain_package('python-pip') }
 

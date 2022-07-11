@@ -1,7 +1,14 @@
 fixtures:
   forge_modules:
     augeas_core: 'puppetlabs/augeas_core'
+    epel:
+      repo: 'puppet/epel'
+      ref: '3.0.1'
+    python: 'puppet/python'
     stdlib: 'puppetlabs/stdlib'
-    vcsrepo: 'puppetlabs/vcsrepo'
+    vcsrepo:
+      repo: 'puppetlabs/vcsrepo'
+      ref: '3.2.1'
+    yumrepo_core: 'puppetlabs/yumrepo_core'
   symlinks:
     "yas3fs": "#{source_dir}"
