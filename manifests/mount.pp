@@ -3,9 +3,11 @@ define yas3fs::mount (
   $s3_url,
   $local_path,
   $ensure                = 'mounted',
+  $init_system           = $::yas3fs::init_system,
   $options               = [],
   $aws_access_key_id     = undef,
   $aws_secret_access_key = undef,
+  $venv_path             = $::yas3fs::venv_path,
 ) {
   validate_array($options)
   validate_string($s3_url, $local_path, $aws_access_key_id, $aws_secret_access_key)
@@ -40,7 +42,7 @@ define yas3fs::mount (
     }
   }
 
-  case $yas3fs::init_system {
+  case $init_system {
     'systemd': {
       exec { "yas3fs_reload_systemd-${name}":
         # SystemD needs a reload after any unit file change
@@ -83,7 +85,7 @@ define yas3fs::mount (
       }
     }
     default : {
-      fail("Unknown init system ${yas3fs::init_system}, unable to install startup script for Yas3fs")
+      fail("Unknown init system ${init_system}, unable to install startup script for Yas3fs")
     }
   }
 

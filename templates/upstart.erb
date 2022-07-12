@@ -22,7 +22,11 @@ script
   if [ $MOUNTED = "1" ]; then
     umount "$LOCAL_PATH"
   fi
+<% if @venv_path -%>
+  <%= "exec #{@venv_path}/bin/yas3fs -f #{cmd_args} \"$S3_URL\" \"$LOCAL_PATH\"" %>
+<% else %>
   <%= "exec /usr/local/bin/yas3fs -f #{cmd_args} \"$S3_URL\" \"$LOCAL_PATH\"" %>
+<% end %>
 end script
 
 pre-stop script

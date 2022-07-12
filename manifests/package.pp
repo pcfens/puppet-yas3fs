@@ -1,7 +1,9 @@
 # yas3fs package install
 class yas3fs::package (
+  $python_version = $::yas3fs::python_version,
   $vcs_remote   = $::yas3fs::vcs_remote,
   $vcs_revision = $::yas3fs::vcs_revision,
+  $venv_path    = $::yas3fs::venv_path,
 ){
   assert_private()
 
@@ -40,7 +42,7 @@ class yas3fs::package (
   # yas3fs setup.py barfs on setuptools and boto3 installs.
   # Let setup.py handle the rest of the requirements
   package { 'setuptools':
-    ensure        => '2.2',
+    ensure        => '44',
     provider      => 'pip',
     allow_virtual => true,
     notify        => Exec['install yas3fs'],
@@ -54,9 +56,19 @@ class yas3fs::package (
     revision => $vcs_revision,
   }
 
+  #If Virtual Environment created pythin should be symlinked to $python_version
+  if $venv_path {
+    $_exec_command = ". ${venv_path}/bin/activate && ${python_version} /var/tmp/yas3fs/setup.py install --prefix=${venv_path}"
+    $_exec_creates = "${venv_path}/bin/yas3fs"
+  }else{
+    $_exec_command = "/usr/bin/${python_version} /var/tmp/yas3fs/setup.py install"
+    $_exec_creates = '/usr/bin/yas3fs'
+
+  }
+
   exec { 'install yas3fs':
-    command => '/usr/bin/python /var/tmp/yas3fs/setup.py install',
-    creates => '/usr/bin/yas3fs',
+    command => $_exec_command,
+    creates => $_exec_creates,
     cwd     => '/var/tmp/yas3fs',
     require => Vcsrepo['/var/tmp/yas3fs'],
   }
