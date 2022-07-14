@@ -61,9 +61,12 @@ class yas3fs::package (
     $_exec_command = ". ${venv_path}/bin/activate && ${python_version} /var/tmp/yas3fs/setup.py install --prefix=${venv_path}"
     $_exec_creates = "${venv_path}/bin/yas3fs"
   }else{
-    $_exec_command = "/usr/bin/${python_version} /var/tmp/yas3fs/setup.py install"
+    $_exec_command = "/usr/bin/env ${python_version} /var/tmp/yas3fs/setup.py install"
+    # Users which install does not create /usr/bin/yasfs consider making a symlink to
+    # Wherever it got installed so puppet will not attempt to reinstall every run
+    # I can really only test on a Redhat machine and relay on rspec to test everything else
+    # - Ron (mojibake-umd) -
     $_exec_creates = '/usr/bin/yas3fs'
-
   }
 
   exec { 'install yas3fs':

@@ -14,9 +14,9 @@
 ### END INIT INFO
 
 <% if @venv_path -%>
-  PATH=<%= @venv_path %>:/usr/local/bin:$PATH
+  PATH=<%= @venv_path %>/bin:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:$PATH
 <% else %>
-PATH=/usr/local/bin:$PATH
+PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:$PATH
 <% end %>
 
 export S3_URL="<%= @s3_url %>"

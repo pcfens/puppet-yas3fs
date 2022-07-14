@@ -25,7 +25,7 @@ script
 <% if @venv_path -%>
   <%= "exec #{@venv_path}/bin/yas3fs -f #{cmd_args} \"$S3_URL\" \"$LOCAL_PATH\"" %>
 <% else %>
-  <%= "exec /usr/local/bin/yas3fs -f #{cmd_args} \"$S3_URL\" \"$LOCAL_PATH\"" %>
+  <%= "exec /usr/bin/env yas3fs -f #{cmd_args} \"$S3_URL\" \"$LOCAL_PATH\"" %>
 <% end %>
 end script
 
