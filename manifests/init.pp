@@ -10,7 +10,7 @@ class yas3fs (
 ) inherits yas3fs::params {
 
   anchor { 'yas3fs::begin': }
-  -> class { '::yas3fs::package': }
+  -> class { '::yas3fs::install': }
   -> class { '::yas3fs::config': }
   -> anchor { 'yas3fs::end':}
 

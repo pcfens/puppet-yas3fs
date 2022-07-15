@@ -1,5 +1,6 @@
 # yas3fs package install
-class yas3fs::package (
+class yas3fs::install (
+  $manage_python  = $::yas3fs::manage_python,
   $python_version = $::yas3fs::python_version,
   $vcs_remote     = $::yas3fs::vcs_remote,
   $vcs_revision   = $::yas3fs::vcs_revision,
