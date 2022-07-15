@@ -1,16 +1,29 @@
 # yas3fs package install
 class yas3fs::package (
   $python_version = $::yas3fs::python_version,
-  $vcs_remote   = $::yas3fs::vcs_remote,
-  $vcs_revision = $::yas3fs::vcs_revision,
-  $venv_path    = $::yas3fs::venv_path,
+  $vcs_remote     = $::yas3fs::vcs_remote,
+  $vcs_revision   = $::yas3fs::vcs_revision,
+  $venv_path      = $::yas3fs::venv_path,
 ){
   assert_private()
 
-  class { 'python':
-    version => $python_version,
-    pip     => 'present',
+
+  if ($manage_python == true) {
+    class { 'python':
+      version => $python_version,
+      pip     => 'present',
+    }
   }
+
+  if $venv_path {
+    python::pyvenv { 'yas3fs virtual environment' :
+      ensure     => present,
+      version    => $python_version,
+      systempkgs => false,
+      venv_dir   => $venv_path,
+    }
+  }
+
   package { 'fuse':
     ensure        => present,
     allow_virtual => true

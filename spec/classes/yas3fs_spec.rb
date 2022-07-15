@@ -9,6 +9,18 @@ describe 'yas3fs', type: :class do
 
         context 'with defaults' do
           describe 'Is expected to install/configure package dependencies and yas3fs' do
+
+            it {
+              is_expected.to contain_class('python').with(
+                'version' => 'python3',
+                'pip'     => 'present',
+              )
+            }
+
+            it {
+              is_expected.not_to contain_python__pyenv('yas3fs virtual environment')
+            }
+
             it { is_expected.to contain_package('fuse') }
             # This case statement currently does not work running pdk test unit
             # I think it has something to newer facter/facterdb gem
@@ -72,22 +84,38 @@ describe 'yas3fs', type: :class do
             )
             }
           end
-          context 'with venv_path set to /opt/yas3fs/venv' do
-            let(:params) do
-              {
-                'venv_path' => '/opt/yas3fs/venv'
-              }
-            end
+        end
 
-            it {
-              is_expected.to contain_exec('install yas3fs').with(
-                'command' => '. /opt/yas3fs/venv/bin/activate && python3 /var/tmp/yas3fs/setup.py install --prefix=/opt/yas3fs/venv',
-                'creates' => '/opt/yas3fs/venv/bin/yas3fs',
-                'cwd'     => '/var/tmp/yas3fs',
-                'require' => 'Vcsrepo[/var/tmp/yas3fs]',
-              )
+        context 'with venv_path set to /opt/yas3fs/venv' do
+          let(:params) do
+            {
+              'venv_path' => '/opt/yas3fs/venv',
             }
           end
+
+          it {
+            is_expected.to contain_exec('install yas3fs').with(
+              'command' => '. /opt/yas3fs/venv/bin/activate && python3 /var/tmp/yas3fs/setup.py install --prefix=/opt/yas3fs/venv',
+              'creates' => '/opt/yas3fs/venv/bin/yas3fs',
+              'cwd'     => '/var/tmp/yas3fs',
+              'require' => 'Vcsrepo[/var/tmp/yas3fs]',
+            )
+          }
+        end
+
+        context 'with manage_python set to false' do
+            let(:params) do
+              {
+                'manage_python' => false,
+              }
+            end
+            it {
+              is_expected.not_to contain_class('python').with(
+                'version' => 'python3',
+                'pip'     => 'present',
+              )
+            }
+
         end
       end
     end
