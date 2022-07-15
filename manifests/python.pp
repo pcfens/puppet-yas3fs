@@ -9,10 +9,6 @@ class yas3fs::python (
   $venv_path      = $::yas3fs::venv_path,
 ) {
 
-  class { 'python':
-    version => $python_version,
-    pip     => 'present',
-  }
 
   if $venv_path {
     python::pyvenv { 'yas3fs virtual environment' :

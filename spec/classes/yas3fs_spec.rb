@@ -18,7 +18,6 @@ describe 'yas3fs', type: :class do
             when 'Redhat'
               it { is_expected.to contain_package('fuse-libs') }
             end
-            it { is_expected.to contain_package('python-pip') }
 
             it {
               is_expected.to contain_augeas('fuse.conf:user_allow_other').with(
@@ -45,16 +44,6 @@ describe 'yas3fs', type: :class do
                 'require' => 'Vcsrepo[/var/tmp/yas3fs]',
               )
             }
-          end
-
-          context 'with install_pip_package set to false' do
-            let :params do
-              {
-                install_pip_package: false,
-              }
-            end
-
-            it { is_expected.not_to contain_package('python-pip') }
           end
 
           context 'with mounts in the initial resource creation' do

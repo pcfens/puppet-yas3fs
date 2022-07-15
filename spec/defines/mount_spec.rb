@@ -8,6 +8,9 @@ describe 'yas3fs::mount', type: :define do
   let :title do
     'test-mount'
   end
+  let(:facts) do
+    facts
+  end
 
   describe 'on all systems' do
     context 'with upstart' do
@@ -21,7 +24,8 @@ describe 'yas3fs::mount', type: :define do
       let :facts do
         {
           service_provider: 'upstart',
-          osfamily: 'Debian'
+          osfamily: 'Debian',
+          os: { family: 'Debian' }
         }
       end
 
@@ -54,7 +58,8 @@ describe 'yas3fs::mount', type: :define do
       let :facts do
         {
           service_provider: 'upstart',
-          osfamily: 'Debian'
+          osfamily: 'Debian',
+          os: { family: 'Debian' }
         }
       end
 
@@ -79,7 +84,8 @@ describe 'yas3fs::mount', type: :define do
       let :facts do
         {
           service_provider: 'systemd',
-          osfamily: 'Debian'
+          osfamily: 'Debian',
+          os: { family: 'Debian' }
         }
       end
 
@@ -119,7 +125,8 @@ describe 'yas3fs::mount', type: :define do
       let :facts do
         {
           service_provider: 'systemd',
-          osfamily: 'Debian'
+          osfamily: 'Debian',
+          os: { family: 'Debian' }
         }
       end
 
@@ -142,7 +149,8 @@ describe 'yas3fs::mount', type: :define do
       let :facts do
         {
           service_provider: 'sysvinit',
-          osfamily: 'Debian'
+          osfamily: 'Debian',
+          os: { family: 'Debian' }
         }
       end
 
@@ -173,7 +181,8 @@ describe 'yas3fs::mount', type: :define do
       let :facts do
         {
           service_provider: 'sysvinit',
-          osfamily: 'Debian'
+          osfamily: 'Debian',
+          os: { family: 'Debian' }
         }
       end
 

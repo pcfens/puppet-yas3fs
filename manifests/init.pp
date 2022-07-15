@@ -1,6 +1,5 @@
 # A module to manage S3 mounts using yas3fs
 class yas3fs (
-  $install_pip_package          = true,
   $init_system                  = $::yas3fs::params::init_system,
   $mounts                       = {},
   $python_version               = 'python3', # Versions such as python,python2.7,python3,python3.6

@@ -7,13 +7,10 @@ class yas3fs::package (
 ){
   assert_private()
 
-  if $::yas3fs::install_pip_package {
-    package { 'python-pip':
-      ensure        => present,
-      allow_virtual => true
-    }
+  class { 'python':
+    version => $python_version,
+    pip     => 'present',
   }
-
   package { 'fuse':
     ensure        => present,
     allow_virtual => true
