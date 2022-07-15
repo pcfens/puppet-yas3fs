@@ -9,7 +9,6 @@ describe 'yas3fs', type: :class do
 
         context 'with defaults' do
           describe 'Is expected to install/configure package dependencies and yas3fs' do
-
             it {
               is_expected.to contain_class('python').with(
                 'version' => 'python3',
@@ -28,7 +27,9 @@ describe 'yas3fs', type: :class do
             # from get_os_facts to get_facts.
             case facts[:osfamily]
             when 'Redhat'
-              it { is_expected.to contain_package('fuse-libs') }
+              it do
+                is_expected.to contain_package('fuse-libs')
+              end
             end
 
             it {
@@ -109,6 +110,7 @@ describe 'yas3fs', type: :class do
               'manage_python' => false,
             }
           end
+
           it {
             is_expected.not_to contain_class('python').with(
               'version' => 'python3',
@@ -123,6 +125,7 @@ describe 'yas3fs', type: :class do
               'python_version' => 'python2',
             }
           end
+
           it {
             is_expected.to contain_class('python').with(
               'version' => 'python2',
@@ -145,6 +148,7 @@ describe 'yas3fs', type: :class do
               'python_version' => 'python2.7',
             }
           end
+
           it {
             is_expected.to contain_class('python').with(
               'version' => 'python2.7',
@@ -167,6 +171,7 @@ describe 'yas3fs', type: :class do
               'python_version' => 'python3',
             }
           end
+
           it {
             is_expected.to contain_class('python').with(
               'version' => 'python3',
@@ -189,6 +194,7 @@ describe 'yas3fs', type: :class do
               'python_version' => 'python3.6',
             }
           end
+
           it {
             is_expected.to contain_class('python').with(
               'version' => 'python3.6',
