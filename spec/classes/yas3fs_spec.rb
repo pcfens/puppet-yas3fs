@@ -104,18 +104,105 @@ describe 'yas3fs', type: :class do
         end
 
         context 'with manage_python set to false' do
-            let(:params) do
-              {
-                'manage_python' => false,
-              }
-            end
-            it {
-              is_expected.not_to contain_class('python').with(
-                'version' => 'python3',
-                'pip'     => 'present',
-              )
+          let(:params) do
+            {
+              'manage_python' => false,
             }
+          end
+          it {
+            is_expected.not_to contain_class('python').with(
+              'version' => 'python3',
+              'pip'     => 'present',
+            )
+          }
+        end
 
+        context 'with python_version set to python2' do
+          let(:params) do
+            {
+              'python_version' => 'python2',
+            }
+          end
+          it {
+            is_expected.to contain_class('python').with(
+              'version' => 'python2',
+              'pip'     => 'present',
+            )
+          }
+          it {
+            is_expected.to contain_exec('install yas3fs').with(
+              'command' => '/usr/bin/env python2 /var/tmp/yas3fs/setup.py install',
+              'creates' => '/usr/bin/yas3fs',
+              'cwd'     => '/var/tmp/yas3fs',
+              'require' => 'Vcsrepo[/var/tmp/yas3fs]',
+            )
+          }
+        end
+
+        context 'with python_version set to python2.7' do
+          let(:params) do
+            {
+              'python_version' => 'python2.7',
+            }
+          end
+          it {
+            is_expected.to contain_class('python').with(
+              'version' => 'python2.7',
+              'pip'     => 'present',
+            )
+          }
+          it {
+            is_expected.to contain_exec('install yas3fs').with(
+              'command' => '/usr/bin/env python2.7 /var/tmp/yas3fs/setup.py install',
+              'creates' => '/usr/bin/yas3fs',
+              'cwd'     => '/var/tmp/yas3fs',
+              'require' => 'Vcsrepo[/var/tmp/yas3fs]',
+            )
+          }
+        end
+
+        context 'with python_version set to python3' do
+          let(:params) do
+            {
+              'python_version' => 'python3',
+            }
+          end
+          it {
+            is_expected.to contain_class('python').with(
+              'version' => 'python3',
+              'pip'     => 'present',
+            )
+          }
+          it {
+            is_expected.to contain_exec('install yas3fs').with(
+              'command' => '/usr/bin/env python3 /var/tmp/yas3fs/setup.py install',
+              'creates' => '/usr/bin/yas3fs',
+              'cwd'     => '/var/tmp/yas3fs',
+              'require' => 'Vcsrepo[/var/tmp/yas3fs]',
+            )
+          }
+        end
+
+        context 'with python_version set to python3.6' do
+          let(:params) do
+            {
+              'python_version' => 'python3.6',
+            }
+          end
+          it {
+            is_expected.to contain_class('python').with(
+              'version' => 'python3.6',
+              'pip'     => 'present',
+            )
+          }
+          it {
+            is_expected.to contain_exec('install yas3fs').with(
+              'command' => '/usr/bin/env python3.6 /var/tmp/yas3fs/setup.py install',
+              'creates' => '/usr/bin/yas3fs',
+              'cwd'     => '/var/tmp/yas3fs',
+              'require' => 'Vcsrepo[/var/tmp/yas3fs]',
+            )
+          }
         end
       end
     end
