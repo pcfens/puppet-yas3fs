@@ -67,6 +67,14 @@ class yas3fs::install (
     revision => $vcs_revision,
   }
 
+  # Trigger install of yas3fs on vcsrepo refresh
+  exec { 'remove install yas3fs creates file':
+    refreshonly => true,
+    command     => '/usr/bin/rm /usr/bin/yas3fs',
+    subscribe   => Vcsrepo['/var/tmp/yas3fs'],
+    notify      => Exec['install yas3fs'],
+  }
+
   #If Virtual Environment created pythin should be symlinked to $python_version
   if $venv_path {
     $_exec_command = ". ${venv_path}/bin/activate && ${python_version} /var/tmp/yas3fs/setup.py install --prefix=${venv_path}"

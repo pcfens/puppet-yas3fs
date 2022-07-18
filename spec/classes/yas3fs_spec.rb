@@ -46,9 +46,19 @@ describe 'yas3fs', type: :class do
                 'ensure'   => 'present',
                 'provider' => 'git',
                 'source'   => 'https://github.com/danilop/yas3fs.git',
-                'revision' => 'master',
+                'revision' => '5bbf8296b5cb16c8afecad94ea55d03c4052a683',
               )
             }
+
+            it {
+              is_expected.to contain_exec('remove install yas3fs creates file').with(
+                'refreshonly' => true,
+                'command'     => '/usr/bin/rm /usr/bin/yas3fs',
+                'subscribe'   => 'Vcsrepo[/var/tmp/yas3fs]',
+                'notify'      => 'Exec[install yas3fs]',
+              )
+            }
+
             it {
               is_expected.to contain_exec('install yas3fs').with(
                 'command' => '/usr/bin/env python3 /var/tmp/yas3fs/setup.py install',
