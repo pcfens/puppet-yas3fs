@@ -53,7 +53,7 @@ class yas3fs::install (
   # yas3fs setup.py barfs on setuptools and boto3 installs.
   # Let setup.py handle the rest of the requirements
   package { 'setuptools':
-    ensure        => '44',
+    ensure        => '44.0.0',
     provider      => 'pip',
     allow_virtual => true,
     notify        => Exec['install yas3fs'],
@@ -74,6 +74,9 @@ class yas3fs::install (
     subscribe   => Vcsrepo['/var/tmp/yas3fs'],
     notify      => Exec['install yas3fs'],
   }
+
+  # TODO offer better cleanup, and remove yas3fs via pip
+  # before install yas3fs overtop of previous version
 
   #If Virtual Environment created pythin should be symlinked to $python_version
   if $venv_path {
