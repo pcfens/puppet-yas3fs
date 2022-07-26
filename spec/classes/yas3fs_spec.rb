@@ -53,7 +53,7 @@ describe 'yas3fs', type: :class do
             it {
               is_expected.to contain_exec('remove install yas3fs creates file').with(
                 'refreshonly' => true,
-                'command'     => '/usr/bin/rm /usr/bin/yas3fs',
+                'command'     => '/usr/bin/rm /usr/local/bin/yas3fs',
                 'subscribe'   => 'Vcsrepo[/var/tmp/yas3fs]',
                 'notify'      => 'Exec[install yas3fs]',
               )
@@ -62,7 +62,7 @@ describe 'yas3fs', type: :class do
             it {
               is_expected.to contain_exec('install yas3fs').with(
                 'command' => '/usr/bin/env python3 /var/tmp/yas3fs/setup.py install',
-                'creates' => '/usr/bin/yas3fs',
+                'creates' => '/usr/local/bin/yas3fs',
                 'cwd'     => '/var/tmp/yas3fs',
                 'require' => 'Vcsrepo[/var/tmp/yas3fs]',
               )
@@ -105,6 +105,14 @@ describe 'yas3fs', type: :class do
           end
 
           it {
+            is_expected.to contain_exec('remove install yas3fs creates file').with(
+              'refreshonly' => true,
+              'command'     => '/usr/bin/rm /opt/yas3fs/venv/bin/yas3fs',
+              'subscribe'   => 'Vcsrepo[/var/tmp/yas3fs]',
+              'notify'      => 'Exec[install yas3fs]',
+            )
+          }
+          it {
             is_expected.to contain_exec('install yas3fs').with(
               'command' => '. /opt/yas3fs/venv/bin/activate && python3 /var/tmp/yas3fs/setup.py install --prefix=/opt/yas3fs/venv',
               'creates' => '/opt/yas3fs/venv/bin/yas3fs',
@@ -145,7 +153,7 @@ describe 'yas3fs', type: :class do
           it {
             is_expected.to contain_exec('install yas3fs').with(
               'command' => '/usr/bin/env python2 /var/tmp/yas3fs/setup.py install',
-              'creates' => '/usr/bin/yas3fs',
+              'creates' => '/usr/local/bin/yas3fs',
               'cwd'     => '/var/tmp/yas3fs',
               'require' => 'Vcsrepo[/var/tmp/yas3fs]',
             )
@@ -168,7 +176,7 @@ describe 'yas3fs', type: :class do
           it {
             is_expected.to contain_exec('install yas3fs').with(
               'command' => '/usr/bin/env python2.7 /var/tmp/yas3fs/setup.py install',
-              'creates' => '/usr/bin/yas3fs',
+              'creates' => '/usr/local/bin/yas3fs',
               'cwd'     => '/var/tmp/yas3fs',
               'require' => 'Vcsrepo[/var/tmp/yas3fs]',
             )
@@ -191,7 +199,7 @@ describe 'yas3fs', type: :class do
           it {
             is_expected.to contain_exec('install yas3fs').with(
               'command' => '/usr/bin/env python3 /var/tmp/yas3fs/setup.py install',
-              'creates' => '/usr/bin/yas3fs',
+              'creates' => '/usr/local/bin/yas3fs',
               'cwd'     => '/var/tmp/yas3fs',
               'require' => 'Vcsrepo[/var/tmp/yas3fs]',
             )
@@ -214,7 +222,7 @@ describe 'yas3fs', type: :class do
           it {
             is_expected.to contain_exec('install yas3fs').with(
               'command' => '/usr/bin/env python3.6 /var/tmp/yas3fs/setup.py install',
-              'creates' => '/usr/bin/yas3fs',
+              'creates' => '/usr/local/bin/yas3fs',
               'cwd'     => '/var/tmp/yas3fs',
               'require' => 'Vcsrepo[/var/tmp/yas3fs]',
             )

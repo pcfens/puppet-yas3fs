@@ -67,13 +67,6 @@ class yas3fs::install (
     revision => $vcs_revision,
   }
 
-  # Trigger install of yas3fs on vcsrepo refresh
-  exec { 'remove install yas3fs creates file':
-    refreshonly => true,
-    command     => '/usr/bin/rm /usr/bin/yas3fs',
-    subscribe   => Vcsrepo['/var/tmp/yas3fs'],
-    notify      => Exec['install yas3fs'],
-  }
 
   # TODO offer better cleanup, and remove yas3fs via pip
   # before install yas3fs overtop of previous version
@@ -84,11 +77,20 @@ class yas3fs::install (
     $_exec_creates = "${venv_path}/bin/yas3fs"
   }else{
     $_exec_command = "/usr/bin/env ${python_version} /var/tmp/yas3fs/setup.py install"
-    # Users which install does not create /usr/bin/yasfs consider making a symlink to
+    # Newer python setup tools installs to /usr/local/bin/ ???
+    # Users which install does not create /usr/local/bin/yasfs consider making a symlink to
     # Wherever it got installed so puppet will not attempt to reinstall every run
     # I can really only test on a Redhat machine and relay on rspec to test everything else
     # - Ron (mojibake-umd) -
-    $_exec_creates = '/usr/bin/yas3fs'
+    $_exec_creates = '/usr/local/bin/yas3fs'
+  }
+
+  # Trigger install of yas3fs on vcsrepo refresh
+  exec { 'remove install yas3fs creates file':
+    refreshonly => true,
+    command     => "/usr/bin/rm ${_exec_creates}",
+    subscribe   => Vcsrepo['/var/tmp/yas3fs'],
+    notify      => Exec['install yas3fs'],
   }
 
   exec { 'install yas3fs':
