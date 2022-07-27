@@ -42,6 +42,23 @@ describe 'yas3fs', type: :class do
             }
 
             it {
+              is_expected.to contain_file('/root/yas3fs_requirements.txt').with(
+                'ensure'  => 'present',
+                'owner'   => 'root',
+                'group'   => 'root',
+                'mode'    => '0664',
+              )
+            }
+
+            it {
+              is_expected.to contain_python__requirements('/root/yas3fs_requirements.txt').with(
+                'virtualenv' => 'system',
+                'require'    => 'File[/root/yas3fs_requirements.txt]',
+                'before'     => 'Exec[install yas3fs]',
+              )
+            }
+
+            it {
               is_expected.to contain_vcsrepo('/var/tmp/yas3fs').with(
                 'ensure'   => 'present',
                 'provider' => 'git',
@@ -134,6 +151,18 @@ describe 'yas3fs', type: :class do
               'version' => 'python3',
               'pip'     => 'present',
             )
+          }
+        end
+
+        context 'with manage_requirements set to false' do
+          let(:params) do
+            {
+              'manage_requirements' => false,
+            }
+          end
+
+          it {
+            is_expected.not_to contain_python__requirements('/root/yas3fs_requirements.txt')
           }
         end
 

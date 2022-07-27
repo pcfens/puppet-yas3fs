@@ -1,0 +1,7 @@
+# This file is puppet managed
+# any changes will be removed
+# by puppet. 
+# Minimum requirements for yas3fs
+setuptools>=2.2
+boto>=2.25.0
+boto3>=1.6.12

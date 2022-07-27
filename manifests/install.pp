@@ -1,10 +1,11 @@
 # yas3fs package install
 class yas3fs::install (
-  $manage_python  = $::yas3fs::manage_python,
-  $python_version = $::yas3fs::python_version,
-  $vcs_remote     = $::yas3fs::vcs_remote,
-  $vcs_revision   = $::yas3fs::vcs_revision,
-  $venv_path      = $::yas3fs::venv_path,
+  $manage_python       = $::yas3fs::manage_python,
+  $manage_requirements = $::yas3fs::manage_requirements,
+  $python_version      = $::yas3fs::python_version,
+  $vcs_remote          = $::yas3fs::vcs_remote,
+  $vcs_revision        = $::yas3fs::vcs_revision,
+  $venv_path           = $::yas3fs::venv_path,
 ){
   assert_private()
 
@@ -51,13 +52,24 @@ class yas3fs::install (
   # but can let pip try to install a newer version overtop
   # howver not recommended, use virtual environment instead.
   # yas3fs setup.py barfs on setuptools and boto3 installs.
-  # Let setup.py handle the rest of the requirements
-  package { 'setuptools':
-    ensure        => '44.0.0',
-    provider      => 'pip',
-    allow_virtual => true,
-    notify        => Exec['install yas3fs'],
+  # we will use python::requirements to ensure
+  # yas3fs requirements are installed.
+
+  if ($manage_requirements == true) {
+    file { '/root/yas3fs_requirements.txt' :
+      ensure  => present,
+      content => file('yas3fs/requirements.txt'),
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0664',
+    }
+    python::requirements { '/root/yas3fs_requirements.txt' :
+      virtualenv => $venv_path,
+      require    => File['/root/yas3fs_requirements.txt'],
+      before     => Exec['install yas3fs'],
+    }
   }
+
   vcsrepo { '/var/tmp/yas3fs':
     # Just 'present' so we do not beatup our git repository
     # provider every 30mins
