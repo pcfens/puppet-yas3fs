@@ -15,7 +15,7 @@ Environment=AWS_ACCESS_KEY_ID=<%= @aws_access_key_id %> AWS_SECRET_ACCESS_KEY=<%
 <% end -%>
 # Thank @djtaylor https://github.com/pcfens/puppet-yas3fs/pull/5
 # /usr/bin/env yas3fs
-<% if @venv_path -%>
+<% if @venv_path != '' -%>
   WorkingDirectory=<%= @venv_path %>
   Environment=PATH=<%= @venv_path %>/bin:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
   ExecStart=<%= @venv_path %>/bin/yas3fs -f <%= cmd_args %> <%= @s3_url %> <%= @local_path %>

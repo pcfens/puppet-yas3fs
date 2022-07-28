@@ -44,7 +44,7 @@ describe 'yas3fs::mount', type: :define do
         'ensure' => 'present',
         'path'   => '/etc/init/s3fs-test-mount.conf',
         'notify' => 'Service[s3fs-test-mount]',
-        'content' => %r{exec /usr/bin/env yas3fs -f  \"\$S3_URL\" \"\$LOCAL_PATH\"},
+        'content' => %r{exec /opt/yas3fs/venv/bin/yas3fs -f  \"\$S3_URL\" \"\$LOCAL_PATH\"},
       )
       }
 
@@ -56,12 +56,12 @@ describe 'yas3fs::mount', type: :define do
       }
     end
 
-    context 'with upstart and venv_path set to /opt/yas3fs/venv' do
+    context 'with upstart and venv_path set to \'\'' do
       let :params do
         {
           s3_url: 's3://test-bucket',
           local_path: '/media/test-mount',
-          venv_path: '/opt/yas3fs/venv',
+          venv_path: '',
         }
       end
 
@@ -88,7 +88,7 @@ describe 'yas3fs::mount', type: :define do
         'ensure' => 'present',
         'path'   => '/etc/init/s3fs-test-mount.conf',
         'notify' => 'Service[s3fs-test-mount]',
-        'content' => %r{exec /opt/yas3fs/venv/bin/yas3fs -f  \"\$S3_URL\" \"\$LOCAL_PATH\"},
+        'content' => %r{exec /usr/bin/env yas3fs -f  \"\$S3_URL\" \"\$LOCAL_PATH\"},
       )
       }
 
@@ -136,22 +136,21 @@ describe 'yas3fs::mount', type: :define do
 
       it {
         is_expected.to contain_file('yas3fs-test-mount').with(
-        'ensure' => 'present',
-        'path'   => '/etc/systemd/system/s3fs-test-mount.service',
-        'notify' => 'Service[s3fs-test-mount]',
-        'content' => %r{ExecStart=/usr/bin/env yas3fs -f  s3://test-bucket /media/test-mount},
-      )
+          'ensure' => 'present',
+          'path'   => '/etc/systemd/system/s3fs-test-mount.service',
+          'notify' => 'Service[s3fs-test-mount]',
+          'content' => %r{ExecStart=/opt/yas3fs/venv/bin/yas3fs -f  s3://test-bucket /media/test-mount},
+        )
       }
-
       it {
         is_expected.to contain_service('s3fs-test-mount').with(
-        'ensure' => 'running',
-        'enable' => true,
-      )
+          'ensure' => 'running',
+          'enable' => true,
+        )
       }
     end
 
-    context 'with systemd and venv_path set to /opt/yas3fs/venv' do
+    context 'with systemd and venv_path set to \'\'' do
       let :facts do
         {
           service_provider: 'systemd',
@@ -174,13 +173,13 @@ describe 'yas3fs::mount', type: :define do
         {
           s3_url: 's3://test-bucket',
           local_path: '/media/test-mount',
-          venv_path: '/opt/yas3fs/venv',
+          venv_path: '',
         }
       end
 
       it {
         is_expected.to contain_file('yas3fs-test-mount').with(
-          'content' => %r{/opt/yas3fs/venv/bin/yas3fs -f  s3://test-bucket /media/test-mount},
+          'content' => %r{ExecStart=/usr/bin/env yas3fs -f  s3://test-bucket /media/test-mount},
         )
       }
     end
@@ -224,7 +223,7 @@ describe 'yas3fs::mount', type: :define do
         'ensure' => 'present',
         'path'   => '/etc/systemd/system/s3fs-test-mount.service',
         'notify' => 'Service[s3fs-test-mount]',
-        'content' => %r{ExecStart=/usr/bin/env yas3fs -f  s3://test-bucket /media/test-mount},
+        'content' => %r{ExecStart=/opt/yas3fs/venv/bin/yas3fs -f  s3://test-bucket /media/test-mount},
       )
       }
 
@@ -291,7 +290,7 @@ describe 'yas3fs::mount', type: :define do
           'ensure' => 'present',
           'path'   => '/etc/init.d/s3fs-test-mount',
           'notify' => 'Service[s3fs-test-mount]',
-          'content' => %r{PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:\$PATH},
+          'content' => %r{PATH=/opt/yas3fs/venv/bin:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:\$PATH},
         )
       }
 
@@ -302,7 +301,7 @@ describe 'yas3fs::mount', type: :define do
       )
       }
     end
-    context 'with sysvinit and venv_path set to /opt/yas3fs/venv' do
+    context 'with sysvinit and venv_path set to \'\'' do
       let :facts do
         {
           service_provider: 'sysvinit',
@@ -315,13 +314,13 @@ describe 'yas3fs::mount', type: :define do
         {
           s3_url: 's3://test-bucket',
           local_path: '/media/test-mount',
-          venv_path: '/opt/yas3fs/venv',
+          venv_path: '',
         }
       end
 
       it {
         is_expected.to contain_file('yas3fs-test-mount').with(
-          'content' => %r{PATH=/opt/yas3fs/venv/bin:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:\$PATH},
+          'content' => %r{PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:\$PATH},
         )
       }
     end

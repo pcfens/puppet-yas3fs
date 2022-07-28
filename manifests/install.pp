@@ -17,7 +17,7 @@ class yas3fs::install (
     }
   }
 
-  if $venv_path {
+  if ($venv_path != '') {
     python::pyvenv { 'yas3fs virtual environment' :
       ensure     => present,
       version    => $python_version,
@@ -55,6 +55,11 @@ class yas3fs::install (
   # we will use python::requirements to ensure
   # yas3fs requirements are installed.
 
+  $virtualenv = $venv_path ? {
+    '' => undef,
+    default => $venv_path,
+  }
+
   if ($manage_requirements == true) {
     file { '/root/yas3fs_requirements.txt' :
       ensure  => present,
@@ -64,7 +69,7 @@ class yas3fs::install (
       mode    => '0664',
     }
     python::requirements { '/root/yas3fs_requirements.txt' :
-      virtualenv => $venv_path,
+      virtualenv => $virtualenv,
       require    => File['/root/yas3fs_requirements.txt'],
       before     => Exec['install yas3fs'],
     }
@@ -84,7 +89,7 @@ class yas3fs::install (
   # before install yas3fs overtop of previous version
 
   #If Virtual Environment created pythin should be symlinked to $python_version
-  if $venv_path {
+  if $venv_path != '' {
     $_exec_command = ". ${venv_path}/bin/activate && ${python_version} /var/tmp/yas3fs/setup.py install --prefix=${venv_path}"
     $_exec_creates = "${venv_path}/bin/yas3fs"
   }else{
