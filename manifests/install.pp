@@ -92,10 +92,10 @@ class yas3fs::install (
 
   #If Virtual Environment created pythin should be symlinked to $python_version
   if $venv_path != '' {
-    $_exec_command = ". ${venv_path}/bin/activate && ${python_version} /var/tmp/yas3fs/setup.py install --prefix=${venv_path}"
+    $_exec_command = ". ${venv_path}/bin/activate && python${python_version} /var/tmp/yas3fs/setup.py install --prefix=${venv_path}"
     $_exec_creates = "${venv_path}/bin/yas3fs"
   }else{
-    $_exec_command = "/usr/bin/env ${python_version} /var/tmp/yas3fs/setup.py install"
+    $_exec_command = "/usr/bin/env python${python_version} /var/tmp/yas3fs/setup.py install"
     # Newer python setup tools installs to /usr/local/bin/ ???
     # Users which install does not create /usr/local/bin/yasfs consider making a symlink to
     # Wherever it got installed so puppet will not attempt to reinstall every run

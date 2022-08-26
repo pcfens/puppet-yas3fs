@@ -11,7 +11,7 @@ describe 'yas3fs', type: :class do
           describe 'Is expected to install/configure package dependencies and yas3fs' do
             it {
               is_expected.to contain_class('python').with(
-                'version' => 'python3',
+                'version'               => '3',
                 'manage_python_package' => true,
                 'manage_pip_package'    => true,
               )
@@ -154,8 +154,8 @@ describe 'yas3fs', type: :class do
           end
 
           it {
-              'version' => 'python3',
             is_expected.to contain_class('python').with(
+              'version'               => '3',
               'manage_python_package' => false,
               'manage_pip_package'    => false,
             )
@@ -174,16 +174,16 @@ describe 'yas3fs', type: :class do
           }
         end
 
-        context 'with python_version set to python2' do
+        context 'with python_version  = 2' do
           let(:params) do
             {
-              'python_version' => 'python2',
+              'python_version' => '2',
             }
           end
 
           it {
             is_expected.to contain_class('python').with(
-              'version' => 'python2',
+              'version'               => '2',
               'manage_python_package' => true,
               'manage_pip_package'    => true,
             )
@@ -198,16 +198,16 @@ describe 'yas3fs', type: :class do
           }
         end
 
-        context 'with python_version set to python2.7' do
+        context 'with python_version = 2.7' do
           let(:params) do
             {
-              'python_version' => 'python2.7',
+              'python_version' => '2.7',
             }
           end
 
           it {
             is_expected.to contain_class('python').with(
-              'version' => 'python2.7',
+              'version'               => '2.7',
               'manage_python_package' => true,
               'manage_pip_package'    => true,
             )
@@ -222,16 +222,16 @@ describe 'yas3fs', type: :class do
           }
         end
 
-        context 'with python_version set to python3' do
+        context 'with python_version = python3' do
           let(:params) do
             {
-              'python_version' => 'python3',
+              'python_version' => '3',
             }
           end
 
           it {
             is_expected.to contain_class('python').with(
-              'version' => 'python3',
+              'version'               => '3',
               'manage_python_package' => true,
               'manage_pip_package'    => true,
             )
@@ -246,16 +246,16 @@ describe 'yas3fs', type: :class do
           }
         end
 
-        context 'with python_version set to python3.6' do
+        context 'with python_version = 3.6' do
           let(:params) do
             {
-              'python_version' => 'python3.6',
+              'python_version' => '3.6',
             }
           end
 
           it {
             is_expected.to contain_class('python').with(
-              'version' => 'python3.6',
+              'version'               => '3.6',
               'manage_python_package' => true,
               'manage_pip_package'    => true,
             )
