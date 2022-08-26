@@ -10,11 +10,13 @@ class yas3fs::install (
   assert_private()
 
 
-  if ($manage_python == true) {
-    class { 'python':
-      version => $python_version,
-      pip     => 'present',
-    }
+  # python::pyvenv includes python class
+  # so if we do not want python to be managed/touched
+  # in any way manage_python should be set to false
+  class { 'python':
+    version               => $python_version,
+    manage_python_package => $manage_python,
+    manage_pip_package    => $manage_python,
   }
 
   if ($venv_path != '') {

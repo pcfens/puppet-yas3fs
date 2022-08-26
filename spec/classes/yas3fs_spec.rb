@@ -12,7 +12,8 @@ describe 'yas3fs', type: :class do
             it {
               is_expected.to contain_class('python').with(
                 'version' => 'python3',
-                'pip'     => 'present',
+                'manage_python_package' => true,
+                'manage_pip_package'    => true,
               )
             }
 
@@ -153,9 +154,10 @@ describe 'yas3fs', type: :class do
           end
 
           it {
-            is_expected.not_to contain_class('python').with(
               'version' => 'python3',
-              'pip'     => 'present',
+            is_expected.to contain_class('python').with(
+              'manage_python_package' => false,
+              'manage_pip_package'    => false,
             )
           }
         end
@@ -182,7 +184,8 @@ describe 'yas3fs', type: :class do
           it {
             is_expected.to contain_class('python').with(
               'version' => 'python2',
-              'pip'     => 'present',
+              'manage_python_package' => true,
+              'manage_pip_package'    => true,
             )
           }
           it {
@@ -205,7 +208,8 @@ describe 'yas3fs', type: :class do
           it {
             is_expected.to contain_class('python').with(
               'version' => 'python2.7',
-              'pip'     => 'present',
+              'manage_python_package' => true,
+              'manage_pip_package'    => true,
             )
           }
           it {
@@ -228,7 +232,8 @@ describe 'yas3fs', type: :class do
           it {
             is_expected.to contain_class('python').with(
               'version' => 'python3',
-              'pip'     => 'present',
+              'manage_python_package' => true,
+              'manage_pip_package'    => true,
             )
           }
           it {
@@ -251,7 +256,8 @@ describe 'yas3fs', type: :class do
           it {
             is_expected.to contain_class('python').with(
               'version' => 'python3.6',
-              'pip'     => 'present',
+              'manage_python_package' => true,
+              'manage_pip_package'    => true,
             )
           }
           it {
