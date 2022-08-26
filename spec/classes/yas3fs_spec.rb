@@ -4,7 +4,11 @@ describe 'yas3fs', type: :class do
     on_supported_os.each do |os, facts|
       context os do
         let(:facts) do
-          facts
+          facts.merge({
+                        python3_version: '3.6',
+            python2_version: '2.7',
+
+                      })
         end
 
         context 'with defaults' do

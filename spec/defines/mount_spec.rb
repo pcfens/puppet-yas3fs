@@ -34,8 +34,9 @@ describe 'yas3fs::mount', type: :define do
               major: '6',
               minor: '10'
             },
-
-          }
+          },
+          python3_version: '3.6',
+          python2_version: '2.7',
         }
       end
 
@@ -78,8 +79,9 @@ describe 'yas3fs::mount', type: :define do
               major: '6',
               minor: '10'
             },
-
-          }
+          },
+          python3_version: '3.6',
+          python2_version: '2.7',
         }
       end
 
@@ -114,8 +116,9 @@ describe 'yas3fs::mount', type: :define do
               major: '7',
               minor: '9'
             },
-
-          }
+          },
+          python3_version: '3.6',
+          python2_version: '2.7',
         }
       end
 
@@ -164,8 +167,9 @@ describe 'yas3fs::mount', type: :define do
               major: '7',
               minor: '9'
             },
-
-          }
+          },
+          python3_version: '3.6',
+          python2_version: '2.7',
         }
       end
 
@@ -198,8 +202,9 @@ describe 'yas3fs::mount', type: :define do
             release: {
               major: '20',
             },
-
-          }
+          },
+          python3_version: '3.6',
+          python2_version: '2.7',
         }
       end
 
@@ -247,8 +252,9 @@ describe 'yas3fs::mount', type: :define do
             release: {
               major: '20',
             },
-
-          }
+          },
+          python3_version: '3.6',
+          python2_version: '2.7',
         }
       end
 
@@ -274,7 +280,9 @@ describe 'yas3fs::mount', type: :define do
         {
           service_provider: 'sysvinit',
           osfamily: 'Debian',
-          os: { family: 'Debian' }
+          os: { family: 'Debian' },
+          python3_version: '3.6',
+          python2_version: '2.7',
         }
       end
 
@@ -306,7 +314,9 @@ describe 'yas3fs::mount', type: :define do
         {
           service_provider: 'sysvinit',
           osfamily: 'Debian',
-          os: { family: 'Debian' }
+          os: { family: 'Debian' },
+          python3_version: '3.6',
+          python2_version: '2.7',
         }
       end
 

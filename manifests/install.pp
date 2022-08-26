@@ -19,10 +19,20 @@ class yas3fs::install (
     manage_pip_package    => $manage_python,
   }
 
+  # pyenv needs major and minor version number
+  # borrow code trick
+  # from https://github.com/voxpupuli/puppet-python/blob/v6.2.1/manifests/pyvenv.pp#L39-L42
+  # python3_version and python2_version are facts created by python module
+  $_python_version = $python_version ? {
+    '3' => $facts['python3_version'],
+    '2' => $facts['python2_version'],
+    default  => $python_version,
+  }
+
   if ($venv_path != '') {
     python::pyvenv { 'yas3fs virtual environment' :
       ensure     => present,
-      version    => $python_version,
+      version    => $_python_version,
       systempkgs => false,
       venv_dir   => $venv_path,
     }
