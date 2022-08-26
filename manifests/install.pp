@@ -119,6 +119,7 @@ class yas3fs::install (
     refreshonly => true,
     command     => "/usr/bin/rm ${_exec_creates}",
     subscribe   => Vcsrepo['/var/tmp/yas3fs'],
+    onlyif      => "test -f ${_exec_creates}",
     notify      => Exec['install yas3fs'],
   }
 
