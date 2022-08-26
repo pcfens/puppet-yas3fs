@@ -102,7 +102,7 @@ class yas3fs::install (
 
   #If Virtual Environment created pythin should be symlinked to $python_version
   if $venv_path != '' {
-    $_exec_command = ". ${venv_path}/bin/activate && python${python_version} /var/tmp/yas3fs/setup.py install --prefix=${venv_path}"
+    $_exec_command = "source ${venv_path}/bin/activate && python${python_version} /var/tmp/yas3fs/setup.py install --prefix=${venv_path}"
     $_exec_creates = "${venv_path}/bin/yas3fs"
   }else{
     $_exec_command = "/usr/bin/env python${python_version} /var/tmp/yas3fs/setup.py install"
@@ -124,9 +124,10 @@ class yas3fs::install (
   }
 
   exec { 'install yas3fs':
-    command => $_exec_command,
-    creates => $_exec_creates,
-    cwd     => '/var/tmp/yas3fs',
-    require => Vcsrepo['/var/tmp/yas3fs'],
+    command  => $_exec_command,
+    creates  => $_exec_creates,
+    cwd      => '/var/tmp/yas3fs',
+    provider => 'shell',
+    require  => Vcsrepo['/var/tmp/yas3fs'],
   }
 }
