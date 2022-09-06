@@ -7,4 +7,19 @@ class yas3fs::params {
     $init_system = 'upstart'
   }
 
+  case $facts['os']['family'] {
+    'RedHat', 'Amazon': {
+      case $facts['os']['release']['major'] {
+        '7', '6': {
+          $manage_requirements = true
+        }
+        default: {
+          $manage_requirements = false
+        }
+      }
+    }
+    default: {
+      $manage_requirements = false
+    }
+  }
 }

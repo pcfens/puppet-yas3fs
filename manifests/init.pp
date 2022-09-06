@@ -4,7 +4,7 @@
 class yas3fs (
   $init_system         = $::yas3fs::params::init_system,
   $manage_python       = false,
-  $manage_requirements = true,
+  $manage_requirements = $::yas3fs::params::manage_requirements,
   $mounts              = {},
   $python_version      = '3', # Versions 2,2.7,3,3.6
   $vcs_remote          = 'https://github.com/danilop/yas3fs.git',

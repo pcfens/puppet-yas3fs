@@ -43,7 +43,7 @@ class yas3fs::install (
     allow_virtual => true
   }
 
-  if ($::osfamily == 'RedHat') {
+  if ($facts['os']['family'] == 'RedHat') {
     package { 'fuse-libs':
       ensure        => present,
       allow_virtual => true

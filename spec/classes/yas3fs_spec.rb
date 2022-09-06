@@ -30,7 +30,7 @@ describe 'yas3fs', type: :class do
             # I think it has something to newer facter/facterdb gem
             # attempting to run facterdb locally complains of switching
             # from get_os_facts to get_facts.
-            case facts[:osfamily]
+            case facts[:os][:family]
             when 'Redhat'
               it do
                 is_expected.to contain_package('fuse-libs')
@@ -46,22 +46,28 @@ describe 'yas3fs', type: :class do
               )
             }
 
-            it {
-              is_expected.to contain_file('/root/yas3fs_requirements.txt').with(
-                'ensure'  => 'present',
-                'owner'   => 'root',
-                'group'   => 'root',
-                'mode'    => '0664',
-              )
-            }
+            case facts[:os][:family]
+            when 'Redhat', 'Amazon'
+              case facts[:os][:release][:major]
+              when '6', '7'
+                it {
+                  is_expected.to contain_file('/root/yas3fs_requirements.txt').with(
+                    'ensure'  => 'present',
+                    'owner'   => 'root',
+                    'group'   => 'root',
+                    'mode'    => '0664',
+                  )
+                }
 
-            it {
-              is_expected.to contain_python__requirements('/root/yas3fs_requirements.txt').with(
-                'virtualenv' => '/opt/yas3fs/venv',
-                'require'    => 'File[/root/yas3fs_requirements.txt]',
-                'before'     => 'Exec[install yas3fs]',
-              )
-            }
+                it {
+                  is_expected.to contain_python__requirements('/root/yas3fs_requirements.txt').with(
+                    'virtualenv' => '/opt/yas3fs/venv',
+                    'require'    => 'File[/root/yas3fs_requirements.txt]',
+                    'before'     => 'Exec[install yas3fs]',
+                  )
+                }
+              end
+            end
 
             it {
               is_expected.to contain_vcsrepo('/var/tmp/yas3fs').with(
@@ -125,13 +131,19 @@ describe 'yas3fs', type: :class do
             }
           end
 
-          it {
-            is_expected.to contain_python__requirements('/root/yas3fs_requirements.txt').with(
-              'virtualenv' => 'system',
-              'require'    => 'File[/root/yas3fs_requirements.txt]',
-              'before'     => 'Exec[install yas3fs]',
-            )
-          }
+          case facts[:os][:family]
+          when 'Redhat', 'Amazon'
+            case facts[:os][:release][:major]
+            when '6', '7'
+              it {
+                is_expected.to contain_python__requirements('/root/yas3fs_requirements.txt').with(
+                  'virtualenv' => 'system',
+                  'require'    => 'File[/root/yas3fs_requirements.txt]',
+                  'before'     => 'Exec[install yas3fs]',
+                )
+              }
+            end
+          end
           it {
             is_expected.to contain_exec('remove install yas3fs creates file').with(
               'refreshonly' => true,
