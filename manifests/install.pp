@@ -35,6 +35,7 @@ class yas3fs::install (
       version    => $_python_version,
       systempkgs => false,
       venv_dir   => $venv_path,
+      before     => Exec['install yas3fs'],
     }
   }
 
