@@ -3,7 +3,7 @@
 # If set to '' system python library path will be used
 class yas3fs (
   $init_system         = $::yas3fs::params::init_system,
-  $manage_python       = true,
+  $manage_python       = false,
   $manage_requirements = true,
   $mounts              = {},
   $python_version      = '3', # Versions 2,2.7,3,3.6

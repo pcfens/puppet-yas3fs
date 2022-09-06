@@ -16,8 +16,8 @@ describe 'yas3fs', type: :class do
             it {
               is_expected.to contain_class('python').with(
                 'version'               => '3',
-                'manage_python_package' => true,
-                'manage_pip_package'    => true,
+                'manage_python_package' => false,
+                'manage_pip_package'    => false,
               )
             }
 
@@ -150,18 +150,18 @@ describe 'yas3fs', type: :class do
           }
         end
 
-        context 'with manage_python set to false' do
+        context 'with manage_python set to true' do
           let(:params) do
             {
-              'manage_python' => false,
+              'manage_python' => true,
             }
           end
 
           it {
             is_expected.to contain_class('python').with(
               'version'               => '3',
-              'manage_python_package' => false,
-              'manage_pip_package'    => false,
+              'manage_python_package' => true,
+              'manage_pip_package'    => true,
             )
           }
         end
@@ -188,8 +188,8 @@ describe 'yas3fs', type: :class do
           it {
             is_expected.to contain_class('python').with(
               'version'               => '2',
-              'manage_python_package' => true,
-              'manage_pip_package'    => true,
+              'manage_python_package' => false,
+              'manage_pip_package'    => false,
             )
           }
           it {
@@ -212,8 +212,8 @@ describe 'yas3fs', type: :class do
           it {
             is_expected.to contain_class('python').with(
               'version'               => '2.7',
-              'manage_python_package' => true,
-              'manage_pip_package'    => true,
+              'manage_python_package' => false,
+              'manage_pip_package'    => false,
             )
           }
           it {
@@ -236,8 +236,8 @@ describe 'yas3fs', type: :class do
           it {
             is_expected.to contain_class('python').with(
               'version'               => '3',
-              'manage_python_package' => true,
-              'manage_pip_package'    => true,
+              'manage_python_package' => false,
+              'manage_pip_package'    => false,
             )
           }
           it {
@@ -260,8 +260,8 @@ describe 'yas3fs', type: :class do
           it {
             is_expected.to contain_class('python').with(
               'version'               => '3.6',
-              'manage_python_package' => true,
-              'manage_pip_package'    => true,
+              'manage_python_package' => false,
+              'manage_pip_package'    => false,
             )
           }
           it {
