@@ -33,7 +33,7 @@ class yas3fs::install (
     python::pyvenv { 'yas3fs virtual environment' :
       ensure     => present,
       version    => $_python_version,
-      systempkgs => true,
+      systempkgs => false,
       venv_dir   => $venv_path,
     }
   }
