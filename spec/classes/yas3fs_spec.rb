@@ -194,6 +194,7 @@ describe 'yas3fs', type: :class do
           let(:params) do
             {
               'python_version' => '2',
+              'venv_path'      => '',
             }
           end
 
@@ -206,8 +207,8 @@ describe 'yas3fs', type: :class do
           }
           it {
             is_expected.to contain_exec('install yas3fs').with(
-              'command' => 'source /opt/yas3fs/venv/bin/activate && python2 /var/tmp/yas3fs/setup.py install --prefix=/opt/yas3fs/venv',
-              'creates' => '/opt/yas3fs/venv/bin/yas3fs',
+              'command' => '/usr/bin/env python2 /var/tmp/yas3fs/setup.py install',
+              'creates' => '/usr/local/bin/yas3fs',
               'cwd'     => '/var/tmp/yas3fs',
               'require' => 'Vcsrepo[/var/tmp/yas3fs]',
             )
@@ -218,6 +219,7 @@ describe 'yas3fs', type: :class do
           let(:params) do
             {
               'python_version' => '2.7',
+              'venv_path'      => '',
             }
           end
 
@@ -230,11 +232,23 @@ describe 'yas3fs', type: :class do
           }
           it {
             is_expected.to contain_exec('install yas3fs').with(
-              'command' => 'source /opt/yas3fs/venv/bin/activate && python2.7 /var/tmp/yas3fs/setup.py install --prefix=/opt/yas3fs/venv',
-              'creates' => '/opt/yas3fs/venv/bin/yas3fs',
+              'command' => '/usr/bin/env python2.7 /var/tmp/yas3fs/setup.py install',
+              'creates' => '/usr/local/bin/yas3fs',
               'cwd'     => '/var/tmp/yas3fs',
               'require' => 'Vcsrepo[/var/tmp/yas3fs]',
             )
+          }
+        end
+
+        context 'with python_version = 2.7 and venv_path = /opt/yas3fs/venv (default)' do
+          let(:params) do
+            {
+              'python_version' => '2.7',
+            }
+          end
+
+          it {
+            is_expected.to compile.and_raise_error(%r{Virtual environment can only be used with python3})
           }
         end
 

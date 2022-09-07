@@ -30,6 +30,9 @@ class yas3fs::install (
   }
 
   if ($venv_path != '') {
+    if versioncmp($python_version, '3') <0 {
+      fail( "Virtual environment can only be used with python3+, please set venv_path to '' for use with python2")
+    }
     python::pyvenv { 'yas3fs virtual environment' :
       ensure     => present,
       version    => $_python_version,
