@@ -5,7 +5,7 @@ describe 'yas3fs', type: :class do
       context os do
         let(:facts) do
           facts.merge({
-                        python3_version: '3.6',
+            python3_version: '3.6',
             python2_version: '2.7',
 
                       })
@@ -22,7 +22,13 @@ describe 'yas3fs', type: :class do
             }
 
             it {
-              is_expected.not_to contain_python__pyenv('yas3fs virtual environment')
+              is_expected.to contain_python__pyvenv('yas3fs virtual environment').with(
+                'ensure'     => 'present',
+                'version'    => '3.6',
+                'systempkgs' => false,
+                'venv_dir'   => '/opt/yas3fs/venv',
+                'before'     => 'Exec[install yas3fs]',
+              )
             }
 
             it { is_expected.to contain_package('fuse') }
@@ -45,29 +51,22 @@ describe 'yas3fs', type: :class do
                 ],
               )
             }
+            it {
+              is_expected.to contain_file('/root/yas3fs_requirements.txt').with(
+                'ensure'  => 'present',
+                'owner'   => 'root',
+                'group'   => 'root',
+                'mode'    => '0664',
+              )
+            }
 
-            case facts[:os][:family]
-            when 'Redhat', 'Amazon'
-              case facts[:os][:release][:major]
-              when '6', '7'
-                it {
-                  is_expected.to contain_file('/root/yas3fs_requirements.txt').with(
-                    'ensure'  => 'present',
-                    'owner'   => 'root',
-                    'group'   => 'root',
-                    'mode'    => '0664',
-                  )
-                }
-
-                it {
-                  is_expected.to contain_python__requirements('/root/yas3fs_requirements.txt').with(
-                    'virtualenv' => '/opt/yas3fs/venv',
-                    'require'    => 'File[/root/yas3fs_requirements.txt]',
-                    'before'     => 'Exec[install yas3fs]',
-                  )
-                }
-              end
-            end
+            it {
+              is_expected.to contain_python__requirements('/root/yas3fs_requirements.txt').with(
+                'virtualenv' => '/opt/yas3fs/venv',
+                'require'    => 'File[/root/yas3fs_requirements.txt]',
+                'before'     => 'Exec[install yas3fs]',
+              )
+            }
 
             it {
               is_expected.to contain_vcsrepo('/var/tmp/yas3fs').with(
@@ -267,6 +266,13 @@ describe 'yas3fs', type: :class do
             )
           }
           it {
+            is_expected.to contain_python__requirements('/root/yas3fs_requirements.txt').with(
+              'virtualenv' => '/opt/yas3fs/venv',
+              'require'    => 'File[/root/yas3fs_requirements.txt]',
+              'before'     => 'Exec[install yas3fs]',
+            )
+          }
+          it {
             is_expected.to contain_exec('install yas3fs').with(
               'command' => 'source /opt/yas3fs/venv/bin/activate && python3 /var/tmp/yas3fs/setup.py install --prefix=/opt/yas3fs/venv',
               'creates' => '/opt/yas3fs/venv/bin/yas3fs',
@@ -288,6 +294,13 @@ describe 'yas3fs', type: :class do
               'version'               => '3.6',
               'manage_python_package' => false,
               'manage_pip_package'    => false,
+            )
+          }
+          it {
+            is_expected.to contain_python__requirements('/root/yas3fs_requirements.txt').with(
+              'virtualenv' => '/opt/yas3fs/venv',
+              'require'    => 'File[/root/yas3fs_requirements.txt]',
+              'before'     => 'Exec[install yas3fs]',
             )
           }
           it {
