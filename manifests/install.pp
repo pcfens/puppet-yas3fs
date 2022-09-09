@@ -83,6 +83,7 @@ class yas3fs::install (
       owner   => 'root',
       group   => 'root',
       mode    => '0664',
+      notify  => Python::Requirements['/root/yas3fs_requirements.txt']
     }
     python::requirements { '/root/yas3fs_requirements.txt' :
       virtualenv => $virtualenv,
