@@ -47,7 +47,9 @@ define yas3fs::mount (
       exec { "yas3fs_reload_systemd-${name}":
         # SystemD needs a reload after any unit file change
         command     => 'systemctl daemon-reload',
-        path        => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
+        # Thank @djtaylor https://github.com/pcfens/puppet-yas3fs/pull/5
+        # /usr/bin/env yas3fs
+        path        => ['/bin', '/sbin', '/usr/bin', '/usr/sbin', '/usr/local/bin'],
         refreshonly => true,
         subscribe   => File["yas3fs-${name}"],
         before      => Service["s3fs-${name}"],
