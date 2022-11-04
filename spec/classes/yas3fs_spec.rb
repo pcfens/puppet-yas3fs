@@ -163,6 +163,20 @@ describe 'yas3fs', type: :class do
           }
         end
 
+        context 'with venv_path set to /some/deep/dark/path/venv' do
+          let(:params) do
+            {
+              'venv_path' => '/some/deep/dark/path/venv',
+            }
+          end
+
+          it { is_expected.to contain_file('/some') }
+          it { is_expected.to contain_file('/some/deep') }
+          it { is_expected.to contain_file('/some/deep/dark') }
+          it { is_expected.to contain_file('/some/deep/dark/path') }
+          it { is_expected.to contain_file('/some/deep/dark/path/venv') }
+        end
+
         context 'with manage_python set to true' do
           let(:params) do
             {
