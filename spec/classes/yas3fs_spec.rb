@@ -21,6 +21,8 @@ describe 'yas3fs', type: :class do
               )
             }
 
+            it { is_expected.to contain_file('/opt/yas3fs') }
+            it { is_expected.to contain_file('/opt/yas3fs/venv') }
             it {
               is_expected.to contain_python__pyvenv('yas3fs virtual environment').with(
                 'ensure'     => 'present',

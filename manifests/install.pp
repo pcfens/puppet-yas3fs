@@ -33,6 +33,20 @@ class yas3fs::install (
     if versioncmp($python_version, '3') <0 {
       fail( "Virtual environment can only be used with python3+, please set venv_path to '' for use with python2")
     }
+
+    # Create all parent directories in provided $venv_path
+    # https://stackoverflow.com/a/56909439
+    $venv_path_dirs = $venv_path[1,-1].dirname.split('/').reduce([]) |$memo, $subdir| {
+    $_dir =  $memo.empty ? {
+        true    => "/${subdir}",
+        default => "${$memo[-1]}/${subdir}",
+    }
+    concat($memo, $_dir)
+    }
+    file {$venv_path_dirs:
+        ensure => directory,
+    }
+
     python::pyvenv { 'yas3fs virtual environment' :
       ensure     => present,
       version    => $_python_version,
