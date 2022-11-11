@@ -13,10 +13,12 @@ class yas3fs::install (
   # python::pyvenv includes python class
   # so if we do not want python to be managed/touched
   # in any way manage_python should be set to false
-  class { 'python':
-    version               => $python_version,
-    manage_python_package => $manage_python,
-    manage_pip_package    => $manage_python,
+  if !defined(Class['python']) {
+    class { 'python':
+      version               => $python_version,
+      manage_python_package => $manage_python,
+      manage_pip_package    => $manage_python,
+    }
   }
 
   # pyenv needs major and minor version number
@@ -56,15 +58,19 @@ class yas3fs::install (
     }
   }
 
-  package { 'fuse':
-    ensure        => present,
-    allow_virtual => true
+  if ! defined(Package['fuse']) {
+    package { 'fuse':
+      ensure        => present,
+      allow_virtual => true
+    }
   }
 
   if ($facts['os']['family'] == 'RedHat') {
-    package { 'fuse-libs':
-      ensure        => present,
-      allow_virtual => true
+    if ! defined(Package['fuse-libs']) {
+      package { 'fuse-libs':
+        ensure        => present,
+        allow_virtual => true
+      }
     }
   }
 

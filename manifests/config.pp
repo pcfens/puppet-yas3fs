@@ -2,11 +2,13 @@
 class yas3fs::config {
   assert_private()
 
-  file { '/etc/fuse.conf':
-    ensure => present,
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0664',
+  if ! defined(File['/etc/fuse.conf']) {
+    file { '/etc/fuse.conf':
+      ensure => present,
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0664',
+    }
   }
 
   augeas { 'fuse.conf:user_allow_other':
