@@ -1,6 +1,36 @@
 # A module to manage S3 mounts using yas3fs
-# @venv_path:
-# If set to '' system python library path will be used
+# * `init_system`:
+#   Specify the init system used. i.g. sysv, systemd
+#
+# * `manage_python`:
+#   Should this module attempt to install and manage
+#   python?
+#
+# * `manage_requirements`:
+#   Should this module attempt to install and manage
+#   yas3fs dependencies?
+#
+# * `mounts`:
+#   A hash of mounts and mount options passed to
+#   defined type yas3fs::mount
+#
+# * `python_version`:
+#   Which version /usr/bin/pythonX[.Y] should be
+#   used to run yas3fs?
+#
+# * `vcsrepo`:
+#   The VCS repository to fetch yas3fs code.
+#
+# * `vcs_revision`:
+#   Revision/Commit/Branch/Tag to check out
+#   when installing yas3fs
+#
+# * `venv_path`:
+#   If set to '' system python library path will be used.
+#   Highly recommend installing yas3fs to a virtual environment
+#   to avoid causing issues with your python based package
+#   management systems i.g. apt, yum...
+#
 class yas3fs (
   $init_system         = $::yas3fs::params::init_system,
   $manage_python       = false,

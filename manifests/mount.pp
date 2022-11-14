@@ -1,4 +1,40 @@
 # A yas3fs mount
+# Defined type to create one or more mount points
+# to S3 bucket endpoints
+#
+# * `s3_url`:
+#   Full S3 url path
+#   i.g. s3://my-bucket/my-path/
+#
+# * `local_path`
+#   The path on the system that S3 bucket
+#   contents should be mount
+#   i.g. /mnt/bucket_here
+#
+# * `ensure`
+#   Define the state of the S3 mount
+#   Validate options:
+#   mounted,unmounted,present,absent
+#
+# * `options`
+#   Array of command line options to passed
+#   to yas3fs at mount time. 
+#   Full list of options available at 
+#   https://github.com/danilop/yas3fs/blob/master/README.md#full-usage
+#
+# * `aws_access_key_id`
+#   Access key id of IAM user with IAM policies
+#   granting access to the S3 bucket defined in s3_url
+#
+# * `aws_access_access_key`
+#   Secret access key of Access key id defined above
+#   Omitting Access key id and Secret access key will
+#   let yas3fs rely on IAM Profile of EC2 instance. 
+#
+# * `venv_path`
+#   The virtual environment where yas3fs is installed.
+#   Help your init system start the mount properly. 
+#
 define yas3fs::mount (
   $s3_url,
   $local_path,

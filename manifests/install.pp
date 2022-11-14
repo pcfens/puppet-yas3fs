@@ -1,4 +1,9 @@
 # yas3fs package install
+# 
+# Class parameters are defined in init.pp
+# Please check init.pp for usage.
+# Please set parameters in base class (init.pp)
+#
 class yas3fs::install (
   $manage_python       = $::yas3fs::manage_python,
   $manage_requirements = $::yas3fs::manage_requirements,
