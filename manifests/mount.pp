@@ -36,14 +36,14 @@
 #   Help your init system start the mount properly. 
 #
 define yas3fs::mount (
-  $s3_url,
-  $local_path,
-  $ensure                = 'mounted',
-  $init_system           = $::yas3fs::init_system,
-  $options               = [],
-  $aws_access_key_id     = undef,
-  $aws_secret_access_key = undef,
-  $venv_path             = $::yas3fs::venv_path,
+  String[6] $s3_url,
+  String[1] $local_path,
+  Enum['mounted','unmounted','present','absent'] $ensure = 'mounted',
+  Enum['systemd','sysvinit','upstart'] $init_system      = $::yas3fs::init_system,
+  Array $options                                         = [],
+  Optional[String] $aws_access_key_id                    = undef,
+  Optional[String] $aws_secret_access_key                = undef,
+  String $venv_path                                      = $::yas3fs::venv_path,
 ) {
   validate_array($options)
   validate_string($s3_url, $local_path, $aws_access_key_id, $aws_secret_access_key)

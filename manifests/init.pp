@@ -32,14 +32,14 @@
 #   management systems i.g. apt, yum...
 #
 class yas3fs (
-  $init_system         = $::yas3fs::params::init_system,
-  $manage_python       = false,
-  $manage_requirements = true,
-  $mounts              = {},
-  $python_version      = '3', # Versions 2,2.7,3,3.6
-  $vcs_remote          = 'https://github.com/danilop/yas3fs.git',
-  $vcs_revision        = '5bbf8296b5cb16c8afecad94ea55d03c4052a683', # v2.4.6 No tag available
-  $venv_path           = '/opt/yas3fs/venv', #Path to install python virtual environment
+  Enum['systemd','sysvinit','upstart'] $init_system = $::yas3fs::params::init_system,
+  Boolean $manage_python       = false,
+  Boolean $manage_requirements = true,
+  Hash $mounts                 = {},
+  String[1] $python_version    = '3', # Versions 2,2.7,3,3.6
+  String[9] $vcs_remote        = 'https://github.com/danilop/yas3fs.git',
+  String[1] $vcs_revision      = '5bbf8296b5cb16c8afecad94ea55d03c4052a683', # v2.4.6 No tag available
+  String $venv_path            = '/opt/yas3fs/venv', #Path to install python virtual environment
 ) inherits yas3fs::params {
 
   anchor { 'yas3fs::begin': }
