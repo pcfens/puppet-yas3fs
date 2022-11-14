@@ -1,6 +1,6 @@
 {
   "name": "pcfens-yas3fs",
-  "version": "0.5.0",
+  "version": "1.0.0",
   "author": "pcfens",
   "summary": "A module to install and manage yas3fs mounts",
   "license": "Apache-2.0",
