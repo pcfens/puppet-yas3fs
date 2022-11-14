@@ -13,11 +13,17 @@ Environment=AWS_ACCESS_KEY_ID=<%= @aws_access_key_id %> AWS_SECRET_ACCESS_KEY=<%
 <% @options.each do |v| -%>
 <% cmd_args = "#{cmd_args} --#{v}" -%>
 <% end -%>
-# TODO: systemd requires a fully qualified path... but Puppet doesn't give us a
-# good way to query what the path to a particular binary is :-/ This may need
-# some further work, PRs welcome
-ExecStart=/usr/bin/yas3fs -f <%= cmd_args %> <%= @s3_url %> <%= @local_path %>
-ExecStop=/bin/umount <%= @local_path %>
+# Thank @djtaylor https://github.com/pcfens/puppet-yas3fs/pull/5
+# /usr/bin/env yas3fs
+<% if @venv_path != '' -%>
+  WorkingDirectory=<%= @venv_path %>
+  Environment=PATH=<%= @venv_path %>/bin:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
+  ExecStart=<%= @venv_path %>/bin/yas3fs -f <%= cmd_args %> <%= @s3_url %> <%= @local_path %>
+<% else %>
+  Environment=PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
+  ExecStart=/usr/bin/env yas3fs -f <%= cmd_args %> <%= @s3_url %> <%= @local_path %>
+<% end %>
+ExecStop=/usr/bin/env umount <%= @local_path %>
 RestartSec=5
 Restart=on-failure
 OOMScoreAdjust=-1000

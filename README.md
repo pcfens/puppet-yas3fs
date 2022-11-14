@@ -32,71 +32,41 @@ invalidating caches on other nodes using SQS and SNS.
 
 * fuse package and configuration
 * init jobs (sysvinit, upstart or systemd) that are used to manage yas3fs mounts
-* python-pip package (optional)
+* python package
 
 ###Beginning with yas3fs
 
-To install fuse, python-pip, and yas3fs
-```puppet
-class { 'yas3fs': }
-```
-To install fuse, python-pip, and yas3fs from github source
+To install fuse and yas3fs from github source
 ```puppet
 class { 'yas3fs':
-  provider: 'vcs',
 }
 ```
-
-If you'd rather provide pip though some other means, set
-`install_pip_package` to `false`:
-```puppet
-class { 'yas3fs':
-  install_pip_package => false,
-}
-```
-
 ##Usage
 
 ###Classes and Defined Types
 
 ####Class: `yas3fs`
 
-The primary module. By default, fuse, python-pip, and yas3fs are installed and
+The primary module. By default, fuse, and yas3fs are installed and
 configured.
 
 **Parameters within `yas3fs`**
-
-#####`install_pip_package`
-
-When set to true, the python-pip package is installed. If the parameter is false
-then the pip command should be provided by some other means or yas3fs will not
-be installed.
 
 #####`init_system`
 
 Defines the type of init script/configuration to install out of `upstart`,
 `systemd` or `sysvinit`. If the parameter is unset, autodiscovery takes place.
+Default: $facts['service_provider']
 
-#####`provider`
+#####`manage_python`
 
-Sets if yas3fs should installed from default pip package provider
-or if github source is pulled and pip package is built.
-Set to 'vcs' to build from github source.
-To switch to vcs from yas3fs previously installied pip package
-manually intervention is required. Please manually
-uninstall previosly installied pip package before switching to
-vcs type install.
-Default: 'pip'
+Defines if this module should attempt to install and manage python
+Default: false
 
-#####`vcs_remote`
+#####`manage_requirements`:
 
-Optionally set yas3fs source code to be other than original
-Default: 'https://github.com/danilop/yas3fs.git'
-
-#####`vcs_revision`
-
-Optionally set to use code from a specific commit or branch
-Default: 'master'
+Defines if this module should attempt to install and manage yas3fs dependencies.
+Default: true
 
 #####`mounts`
 
@@ -113,6 +83,30 @@ class { 'yas3fs':
   }
 }
 ```
+#####`python_version`:
+
+Which version /usr/bin/pythonX[.Y] should be used to run yas3fs?
+Major version X require, minor version Y is optional.
+i.g. 3,3.6,3.8,2,2.7
+Default: 3
+
+#####`vcs_remote`
+
+Optionally set yas3fs source code to be other than original
+Default: 'https://github.com/danilop/yas3fs.git'
+
+#####`vcs_revision`
+
+Optionally set to use code from a specific commit or branch
+Default: '5bbf8296b5cb16c8afecad94ea55d03c4052a683' # v2.4.6 No tag available 
+
+#####`venv_path`
+
+Path to python virtual environment. 
+If set to '' system python library path will be used.
+Highly recommend installing yas3fs to a virtual environment
+to avoid causing issues with your python based package
+management systems i.g. apt, yum...
 
 ####Defined Type: `yas3fs::mount`
 
@@ -132,14 +126,6 @@ yas3fs::mount { 'example-mount':
 
 **Parameters within `yas3fs::mount`**
 
-#####`ensure`
-
-Control what to do with this mount. Valid values are `mounted` (default), `unmounted`, `absent`,
-and `present`.
-
-WARNING: setting ensure to `absent` removes the service configuration, but cannot
-verify that the service is stopped.
-
 #####`s3_url`
 
 The S3 URL that should be mounted (e.g. s3://my-bucket/my-path)
@@ -148,16 +134,33 @@ The S3 URL that should be mounted (e.g. s3://my-bucket/my-path)
 
 The location where the S3 bucket should be mounted.
 
-#####`aws_access_key_id` and `aws_secret_access_key`
+#####`ensure`
 
-The credentials to use when connecting to AWS. Credentials can be omitted on EC2
-instances with appropriate IAM roles assigned.
+Control what to do with this mount. Valid values are `mounted` (default), `unmounted`, `absent`,
+and `present`.
+
+WARNING: setting ensure to `absent` removes the service configuration, but cannot
+verify that the service is stopped.
+
+#####`init_system`
+
+Your init system so that proper mount startup script can be created.
 
 #####`options`
 
 An array of command line arguments that should be passed to yas3fs. The leading
 dashes can be omitted. A full list of options is in the
 [yas3fs documentation](https://github.com/danilop/yas3fs/blob/master/README.md).
+
+#####`aws_access_key_id` and `aws_secret_access_key`
+
+The credentials to use when connecting to AWS. Credentials can be omitted on EC2
+instances with appropriate IAM roles assigned.
+
+#####`venv_path`
+
+The virtual environment where yas3fs is installed.
+Help your init system start the mount properly. 
 
 ##Reference
 
@@ -170,7 +173,7 @@ dashes can be omitted. A full list of options is in the
 ####Private Classes
 
 * `yas3fs::config`: Manages the fuse configuration
-* `yas3fs::package`: Installs pip, fuse, and yas3fs
+* `yas3fs::install`: Installs fuse, and yas3fs
 * `yas3fs::params`: Manages base parameters
 
 ###Defined Types
@@ -182,4 +185,4 @@ dashes can be omitted. A full list of options is in the
 ##Limitations
 
 yas3fs is written for python 2.6, though there has been a lot of success running
-it on 2.7.
+it on 2.7, and now 3.x.

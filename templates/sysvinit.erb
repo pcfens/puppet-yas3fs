@@ -13,7 +13,11 @@
 # Description:       Sets up a FUSE mount for an S3-backed filesystem using Yas3fs
 ### END INIT INFO
 
-PATH=$PATH:/usr/local/bin
+<% if @venv_path != '' -%>
+  PATH=<%= @venv_path %>/bin:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:$PATH
+<% else %>
+PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:$PATH
+<% end %>
 
 export S3_URL="<%= @s3_url %>"
 export LOCAL_PATH="<%= @local_path %>"
